@@ -1,1 +1,7 @@
 A basic BlackJack application.
+
+The game is run by running game.py with Python. That is, run
+
+    ./game.py
+
+in the command line.
