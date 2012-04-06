@@ -15,8 +15,22 @@ from game import Game
 # standing (I think)
 
 # while game is not over:
-    # determine state of game
+    # for each player at the table:
+        # get player input and act on that action
+    # dealer performs action (reveals card, I think?)
 
+    # check state of game. Is everybody standing or surrendered?
+    # (do this by asking each player for input, and having them all be
+    # unable to do so.)
+        # if everybody is finished, 
+            # enter dealer action loop until round is complete
+            # Turn complete. Move chips, clear cards, adjust the turn counter,
+            # allow first-turn actions. (etc!)
+        # ELSE, ie. somebody is not finished:
+            # disallow some first-turn actions.
+            # continue to the start of the Game Loop.
+        
+    
     # retrieve input from players if necessary
 
     # set game state (eg. set 'over' if it's over to kill the game loop)
@@ -25,7 +39,9 @@ deck = Deck()
 deck.shuffle()
 # For now, create a single player. Should allow for more.
 players = [Player()]
+dealer = Dealer
 
+# Initialize game object
 game = Game(deck, players)
 
 deck = game.deck
