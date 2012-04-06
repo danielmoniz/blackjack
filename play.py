@@ -3,6 +3,7 @@
 from player import Player
 from dealer import Dealer
 from deck import Deck
+from game import Game
 
 # Run the actual game loop, turn by turn.
 
@@ -22,5 +23,15 @@ from deck import Deck
 """ TESTING AREA """
 deck = Deck()
 deck.shuffle()
-while deck.get_num_cards() > 0:
-    print deck.get_next_card()
+# For now, create a single player. Should allow for more.
+players = [Player()]
+
+game = Game(deck, players)
+
+deck = game.deck
+players = game.players
+print players
+print players[0]
+
+"""while deck.get_num_cards() > 0:
+    print deck.get_next_card()"""

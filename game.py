@@ -1,8 +1,10 @@
 class Game:
-    def __init__(self):
+    def __init__(self, deck = None, players = []):
         self.max_bet = 100
         self.game_over = False
-        self.deck = None
+        self.deck = deck
+        self.max_players = 2
+        self.players = players
 
     def end_game(self):
         """Simply set the game state to be over."""
@@ -18,3 +20,12 @@ class Game:
         """Receive an action from a player and make it happen."""
         return 
 
+    def add_player(self, player):
+        """Add a new player to the table. Returns True if a player is added,
+        and False otherwise."""
+        if len(self.players) >= self.max_players:
+            print "Cannot have more than {} players!".format(self.max_players)
+            return False
+        else:
+            self.players.append(player)
+            return True

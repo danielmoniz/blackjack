@@ -5,6 +5,7 @@ class Player:
     def __init__(self):
         """Initialize chips and cards for a player."""
         # Other things might need to be initialized.
+        self.name = None
         self.chips = 500
         self.cards = []
         self.actions = {
@@ -14,6 +15,11 @@ class Player:
             'split': self.split, 
             'surrender': self.surrender
         }
+
+    def __str__(self):
+        """Return the name of a player, or Player X if not set."""
+        if self.name == None:
+            return "Human player"
 
     def get_allowed_actions(self):
         """Return the actions currently available to the player."""
