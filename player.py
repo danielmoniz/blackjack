@@ -8,7 +8,7 @@ class Player:
         # Other things might need to be initialized.
         self.name = name
         self.chips = 500
-        self.cards = []
+        self.hands = []
         self.turn_over = False
         self.actions = {
             'double': self.double_down, 
@@ -28,14 +28,24 @@ class Player:
         """Return the actions currently available to the player."""
         return ['double', 'hit', 'stand', 'split', 'surrender']
 
+    # NOTE: This function is to be deprecated for a more dynamic funciton that
+    # allows for a specific hand to be given a new card, not just a player.
+    def assign_new_card(self, new_card):
+        self.hands[0].append(new_card)
+        return True
+
+    def assign_hand(self, hand):
+        self.hands.append(hand)
+        return True
+
     def get_action(self):
         """Get input from the player to determine their next action."""
         # input will require a loop until the player enters a valid action.
         return self.get_user_input("Type an action: ")
 
-    def get_total_card_value(self):
+    def get_total_card_value(self, hand):
         """Add up the cards in play and return their value."""
-        return sum(self.cards)
+        return sum(hand)
 
     def perform_action(self, action):
         """Take in an action and act on it."""

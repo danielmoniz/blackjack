@@ -43,6 +43,7 @@ dealer = Dealer("Dealer")
 
 # Initialize game object
 game = Game(deck, dealer, players)
+game.start_turn()
 
 # GAME LOOP - retrieve player input until they have lost the round or are
 while not game.over:
@@ -50,6 +51,9 @@ while not game.over:
     for player in players:
         action = player.get_action()
         player.perform_action(action)
+        game.accomodate_player_action(player, action)
+        for card in player.hands[0]:
+            print card
     dealer_action = dealer.get_action()
     dealer.perform_action(dealer_action)
 
@@ -67,7 +71,8 @@ while not game.over:
             dealer.perform_action(action)
 
         # Turn is now over. Clean up the table and prepare for a new turn.
-        game.end_turn_clean_up()
+        game.end_turn()
+        game.start_turn()
     else:
         # disallow first-turn actions. Move to start of loop
         continue

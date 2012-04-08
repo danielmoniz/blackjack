@@ -4,7 +4,7 @@ import random
 class Deck:
     def __init__(self, num_decks = 2):
 # randomly generate cards here
-        self.suits = ['hearts', 'clubs', 'spaces', 'diamonds']
+        self.suits = ['hearts', 'clubs', 'spades', 'diamonds']
         self.cards_per_suit = 13
         # ^^^ relies on suits being set
         self.cards = self.generate_deck(num_decks)
@@ -18,18 +18,6 @@ class Deck:
     def get_num_cards(self):
         """Return the total number of cards left in the deck."""
         return len(self.cards)
-
-    def deal_initial_hands(self):
-        """A wrapper for get_next_card. Deals hands for all players in the
-        game.
-        Deal two cards to each bet box starting from the dealer's left,
-        followed by one for the dealer and one face down."""
-        pass
-
-    def deal_cards(self):
-        """Deal a single card to each position that has a bet, clockwise from
-        dealer's left, followed by a single card to the dealer. Then deal an initial card to each position in play."""
-        pass
 
     def generate_deck(self, num_decks):
         """A helper function to generate a deck."""

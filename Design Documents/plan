@@ -1,9 +1,13 @@
-- allow players to bet on hands
-    - can initially limit this to their own hands
-- have chips be moved around
 - deal with cards in play
     - possibly create a Hand object.
         - counts sum of each item in hand (for the case of splitting)
         - determine whether a hand is a Blackjack or not
+- allow players to bet on hands
+    - can initially limit this to their own hands
+- have chips be moved around
 
 - create interface API to allow for another interface to be plugged in
+
+ABOVE AND BEYOND
+- keep track of wins, losses and situations
+    - allow players to plug in strategies that use this data
