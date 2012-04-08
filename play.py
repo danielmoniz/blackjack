@@ -25,24 +25,54 @@ from game import Game
         # if everybody is finished, 
             # enter dealer action loop until round is complete
             # Turn complete. Move chips, clear cards, adjust the turn counter,
-            # allow first-turn actions. (etc!)
+            # allow first-turn actions, set players to have their turns not be
+            # over. (etc!)
+            # if there are no more players, or they have no chips:
+                # Set the game to be over
+            
         # ELSE, ie. somebody is not finished:
             # disallow some first-turn actions.
             # continue to the start of the Game Loop.
         
-    
-    # retrieve input from players if necessary
-
-    # set game state (eg. set 'over' if it's over to kill the game loop)
 """ TESTING AREA """
 deck = Deck()
 deck.shuffle()
 # For now, create a single player. Should allow for more.
-players = [Player()]
-dealer = Dealer
+players = [Player("Human 1")]
+dealer = Dealer("Dealer")
 
 # Initialize game object
-game = Game(deck, players)
+game = Game(deck, dealer, players)
+
+# GAME LOOP - retrieve player input until they have lost the round or are
+while not game.over:
+    # For each player at table, get actions, followed by dealer's action
+    for player in players:
+        action = player.get_action()
+        player.perform_action(action)
+    dealer_action = dealer.get_action()
+    dealer.perform_action(dealer_action)
+
+    # Check game state. Is everybody standing or surrendered?
+    players_finished = True
+    for player in players:
+        if not player.turn_over:
+            players_finished = False
+            break
+
+    if players_finished:
+        # Enter dealer loop until dealer is finished
+        while not dealer.turn_over:
+            action = dealer.get_action()
+            dealer.perform_action(action)
+
+        # Turn is now over. Clean up the table and prepare for a new turn.
+        game.end_turn_clean_up()
+    else:
+        # disallow first-turn actions. Move to start of loop
+        continue
+
+
 
 deck = game.deck
 players = game.players

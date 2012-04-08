@@ -2,8 +2,8 @@ from player import Player
 
 class Dealer(Player):
 
-    def __init__(self):
-        Player.__init__(self)
+    def __init__(self, name = None):
+        Player.__init__(self, name)
         self.chips = float("inf")
 
     def __str__(self):
