@@ -14,7 +14,6 @@ class Game:
     def start_turn(self):
         """Deal new hands, and perform any other start-of-turn actions."""
         self.deal_initial_hands()
-        pass
 
     def end_turn(self):
         """Perform any tasks required at the end of a turn. Eg. empty hands and
@@ -70,17 +69,31 @@ class Game:
         """Deals hands for all players in the game.  Deal two cards to each bet
         box starting from the dealer's left, followed by one for the dealer and
         one face down."""
+        print "deal_initial_hands"
         num_cards = 2
         for player in self.players:
             new_hand = []
             for i in range(num_cards):
                 new_hand.append(self.deck.get_next_card())
             player.assign_hand(new_hand)
+            """print "Newly assigned cards:"
             for card in new_hand:
-                print card
+                print card"""
 
+    # @TODO What is this function for if users are able to receive cards by
+    # hitting?
     def deal_cards(self):
         """Deal a single card to each position that has a bet, clockwise from
-        dealer's left, followed by a single card to the dealer. Then deal an initial card to each position in play."""
+        dealer's left, followed by a single card to the dealer."""
         pass
 
+    def validate_player_hands(self):
+        """Iterate through players in the game, checking their hands. If any
+        are invalid (over 21), remove them and move chips accordingly."""
+        for player in self.players:
+            for hand in player.hands:
+                if player.get_hand_value(hand) > 21:
+                    # @TODO Move bets
+                    print "folded hand. value", player.get_hand_value(hand)
+                    player.fold_hand(hand)
+                    player.set_turn_over()

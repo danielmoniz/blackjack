@@ -49,15 +49,23 @@ game.start_turn()
 while not game.over:
     # For each player at table, get actions, followed by dealer's action
     for player in players:
+        print "---------", player.name
+        for hand in player.hands:
+            for card in hand:
+                print card
+            print "--"
+        print "---------"
         action = player.get_action()
         player.perform_action(action)
         game.accomodate_player_action(player, action)
-        for card in player.hands[0]:
-            print card
+        if len(player.hands) > 1:
+            for card in player.hands[0]:
+                print card
+    game.validate_player_hands()
     dealer_action = dealer.get_action()
     dealer.perform_action(dealer_action)
 
-    # Check game state. Is everybody standing or surrendered?
+    # Check game state. Is everybody standing, surrendered, or over?
     players_finished = True
     for player in players:
         if not player.turn_over:
@@ -76,13 +84,3 @@ while not game.over:
     else:
         # disallow first-turn actions. Move to start of loop
         continue
-
-
-
-deck = game.deck
-players = game.players
-print players
-print players[0]
-
-"""while deck.get_num_cards() > 0:
-    print deck.get_next_card()"""

@@ -17,7 +17,7 @@ class Dealer(Player):
 
     def get_action(self):
         """Given the dealer's current hand situation, return the required action."""
-        if self.get_total_card_value < 17:
+        if self.get_hand_value < 17:
             return 'hit'
         else:
             return 'stand'

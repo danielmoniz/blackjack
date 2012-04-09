@@ -31,6 +31,10 @@ class Player:
     # NOTE: This function is to be deprecated for a more dynamic funciton that
     # allows for a specific hand to be given a new card, not just a player.
     def assign_new_card(self, new_card):
+
+        # If player has no hands, create one.
+        if len(self.hands) == 0:
+            self.hands.append([])
         self.hands[0].append(new_card)
         return True
 
@@ -38,14 +42,27 @@ class Player:
         self.hands.append(hand)
         return True
 
+    # @TODO This may not be necessary!
+    def validate_hands(self):
+        """Check if any of the player's hands are invalid. If so, push their chips to the dealer."""
+        pass
+
+    def get_hand_value(self, hand):
+        """Add up the cards in play and return their value."""
+        hand_sum = 0
+        for card in hand:
+            hand_sum += card.get_value()
+        return hand_sum
+
     def get_action(self):
         """Get input from the player to determine their next action."""
         # input will require a loop until the player enters a valid action.
         return self.get_user_input("Type an action: ")
 
-    def get_total_card_value(self, hand):
-        """Add up the cards in play and return their value."""
-        return sum(hand)
+    def fold_hand(self, hand):
+        """Remove a hand from play."""
+        self.hands.remove(hand)
+        return True
 
     def perform_action(self, action):
         """Take in an action and act on it."""
@@ -63,7 +80,7 @@ class Player:
 
     def stand(self):
         """Ie. end their turn (and wait)."""
-        self.turn_over = True
+        self.set_turn_over()
         print self.name, 'STAND' # Test output
         pass
 
