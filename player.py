@@ -30,12 +30,20 @@ class Player:
 
     # NOTE: This function is to be deprecated for a more dynamic funciton that
     # allows for a specific hand to be given a new card, not just a player.
-    def assign_new_card(self, new_card):
+    def assign_new_card(self, new_card, hand = None):
 
         # If player has no hands, create one.
         if len(self.hands) == 0:
-            self.hands.append([])
-        self.hands[0].append(new_card)
+            self.hands.append(Hand([new_card]))
+        # If player has exactly one hand, use it.
+        elif len(self.hands) == 1:
+            self.hands[0].add_card(new_card)
+        else:
+            # if no hand is specified and player has >1 hands, return False.
+            # This assumes hands is a non-negative integer.
+            if hand == None:
+                return False
+            hand.add_card(new_card)
         return True
 
     def assign_hand(self, hand):
@@ -61,7 +69,20 @@ class Player:
 
     def fold_hand(self, hand):
         """Remove a hand from play."""
-        self.hands.remove(hand)
+        print "-------------------"
+        print "List of self's cards in each hand:"
+        for hand in self.hands:
+            for card in hand.cards:
+                print card
+        print "----removing hand-------"
+        #self.hands.remove(hand)
+        index = self.hands.index(hand)
+        del self.hands[index]
+        print "List of self's cards *remaining* in each hand:"
+        for hand in self.hands:
+            for card in hand.cards:
+                print card
+        print "-------------------"
         return True
 
     def perform_action(self, action):

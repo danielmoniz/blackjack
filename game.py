@@ -1,3 +1,5 @@
+from hand import Hand
+
 class Game:
     def __init__(self, deck = None, dealer = None, players = []):
         self.min_bet = 10
@@ -79,9 +81,9 @@ class Game:
         one face down."""
         num_cards = 2
         for player in self.players:
-            new_hand = []
+            new_hand = Hand()
             for i in range(num_cards):
-                new_hand.append(self.deck.get_next_card())
+                new_hand.add_card(self.deck.get_next_card())
             player.assign_hand(new_hand)
             """print "Newly assigned cards:"
             for card in new_hand:
@@ -99,8 +101,8 @@ class Game:
         are invalid (over 21), remove them and move chips accordingly."""
         for player in self.players:
             for hand in player.hands:
-                if player.get_hand_value(hand) > 21:
+                if hand.smallest_value() > 21:
                     # @TODO Move bets
-                    print "folded hand. value", player.get_hand_value(hand)
+                    print "folded hand. value", hand.smallest_value()
                     player.fold_hand(hand)
                     player.set_turn_over()

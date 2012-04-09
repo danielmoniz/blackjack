@@ -46,12 +46,13 @@ game = Game(deck, dealer, players)
 game.start_turn()
 
 # GAME LOOP - retrieve player input until they have lost the round or are
+# standing (I think)
 while not game.over:
     # For each player at table, get actions, followed by dealer's action
     for player in players:
         print "---------", player.name
         for hand in player.hands:
-            for card in hand:
+            for card in hand.cards:
                 print card
             print "--"
         print "---------"
@@ -59,8 +60,9 @@ while not game.over:
         player.perform_action(action)
         game.accomodate_player_action(player, action)
         if len(player.hands) > 1:
-            for card in player.hands[0]:
-                print card
+            for hand in player.hands:
+                for card in hand.cards:
+                    print card
     game.validate_player_hands()
     dealer_action = dealer.get_action()
     dealer.perform_action(dealer_action)

@@ -19,6 +19,8 @@ class Card:
 
     def get_value(self):
         """Return the value of the card."""
+        if self.value > 10:
+            return 10
         return self.value
 
     def flip(self):
