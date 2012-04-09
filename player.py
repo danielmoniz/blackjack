@@ -95,6 +95,12 @@ class Player:
         self.turn_over = True
         pass
 
+    def place_bet(self, size_of_bet, hand = None):
+        """Makes a player place a bet on a specific hand that belongs to them.
+        If no hand is provided, it defaults to their first hand."""
+        pass
+
+
     def get_user_input(self, message):
         user_input = raw_input(message)
         while user_input not in self.get_allowed_actions():

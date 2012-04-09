@@ -1,5 +1,6 @@
 class Game:
     def __init__(self, deck = None, dealer = None, players = []):
+        self.min_bet = 10
         self.max_bet = 100
         self.over = False
         self.deck = deck
@@ -14,6 +15,11 @@ class Game:
     def start_turn(self):
         """Deal new hands, and perform any other start-of-turn actions."""
         self.deal_initial_hands()
+        # @TODO Ask for bets from each player.
+        for player in self.players:
+            pass
+            player.place_bet(self.min_bet)
+
 
     def end_turn(self):
         """Perform any tasks required at the end of a turn. Eg. empty hands and
@@ -34,6 +40,7 @@ class Game:
         if action == 'hit':
             new_card = self.deck.get_next_card()
             player.assign_new_card(new_card)
+            print "Dealt:", new_card
         elif action == 'split':
             # @TODO
             pass
@@ -59,8 +66,9 @@ class Game:
         """Remove a player from the game for losing.
         Returns True if they were successfully kicked, and false otherwise."""
         try:
+            print player, "loses!"
+            # @TODO Move this message to the UI module.
             game.players.remove(player)
-            # @TODO Print some message about a player losing.
             return True
         except KeyError:
             return False
@@ -69,7 +77,6 @@ class Game:
         """Deals hands for all players in the game.  Deal two cards to each bet
         box starting from the dealer's left, followed by one for the dealer and
         one face down."""
-        print "deal_initial_hands"
         num_cards = 2
         for player in self.players:
             new_hand = []
