@@ -1,3 +1,4 @@
+from hand import Hand
 class Player:
 
     """Describes each player object in the game."""
@@ -47,8 +48,21 @@ class Player:
         return True
 
     def assign_hand(self, hand):
+        """Deal a new hand to the player."""
         self.hands.append(hand)
-        return True
+
+    def purge_hands(self):
+        """Remove all hands."""
+        """print "PURGING HANDS"
+        for hand in self.hands:
+            print hand"""
+        del self.hands
+        self.hands = []
+        """print "-----"
+        for hand in self.hands:
+            print hand
+        print "FINISHED PURGING HANDS"
+        """
 
     # @TODO This may not be necessary!
     def validate_hands(self):
@@ -69,20 +83,7 @@ class Player:
 
     def fold_hand(self, hand):
         """Remove a hand from play."""
-        print "-------------------"
-        print "List of self's cards in each hand:"
-        for hand in self.hands:
-            for card in hand.cards:
-                print card
-        print "----removing hand-------"
-        #self.hands.remove(hand)
-        index = self.hands.index(hand)
-        del self.hands[index]
-        print "List of self's cards *remaining* in each hand:"
-        for hand in self.hands:
-            for card in hand.cards:
-                print card
-        print "-------------------"
+        hand.fold()
         return True
 
     def perform_action(self, action):
@@ -116,6 +117,7 @@ class Player:
         self.turn_over = True
         pass
 
+    # @TODO Make this do something.
     def place_bet(self, size_of_bet, hand = None):
         """Makes a player place a bet on a specific hand that belongs to them.
         If no hand is provided, it defaults to their first hand."""

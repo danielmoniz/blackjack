@@ -16,6 +16,7 @@ class Game:
 
     def start_turn(self):
         """Deal new hands, and perform any other start-of-turn actions."""
+        #print "in start_turn"
         self.deal_initial_hands()
         # @TODO Ask for bets from each player.
         for player in self.players:
@@ -25,11 +26,22 @@ class Game:
 
     def end_turn(self):
         """Perform any tasks required at the end of a turn. Eg. empty hands and
-        move chips around."""
-        # Allow first-turn actions
+        compare dealer score to move chips around accordingly."""
+        #dealer_score = self.dealer.hands[0].best_value()
+        #print "Dealer score:", dealer_score
+        # @TODO Allow first-turn actions
         # Set players' turns to not be over.
-        for player in self.players:
+        print "ENDING TURN"
+        for i in range(len(self.players)):
+            del self.players[i].hands
+            self.players[i].hands = []
+        """for player in self.players:
+            del player.hands
+            player.hands = []
             player.set_turn_over(False)
+            # @TODO Move all chips.
+            # clear all hands
+            player.purge_hands()"""
         # End the game if there are no more players.
         if len(self.players) == 0:
             self.game_over = True
@@ -82,12 +94,13 @@ class Game:
         num_cards = 2
         for player in self.players:
             new_hand = Hand()
+            print "Newly dealt cards:"
             for i in range(num_cards):
-                new_hand.add_card(self.deck.get_next_card())
+                new_card = self.deck.get_next_card()
+                new_hand.add_card(new_card)
+                print new_card,
+            print ""
             player.assign_hand(new_hand)
-            """print "Newly assigned cards:"
-            for card in new_hand:
-                print card"""
 
     # @TODO What is this function for if users are able to receive cards by
     # hitting?
@@ -99,10 +112,14 @@ class Game:
     def validate_player_hands(self):
         """Iterate through players in the game, checking their hands. If any
         are invalid (over 21), remove them and move chips accordingly."""
+        print "validating player hands"
         for player in self.players:
             for hand in player.hands:
                 if hand.smallest_value() > 21:
                     # @TODO Move bets
                     print "folded hand. value", hand.smallest_value()
                     player.fold_hand(hand)
-                    player.set_turn_over()
+            # if no hands remaining, end player's turn.
+            valid_hands = [hand for hand in player.hands if not hand.folded]
+            if len(valid_hands) == 0:
+                player.set_turn_over()

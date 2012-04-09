@@ -50,20 +50,21 @@ game.start_turn()
 while not game.over:
     # For each player at table, get actions, followed by dealer's action
     for player in players:
+        """for hand in player.hands:
+            player.hands.remove(hand)"""
         print "---------", player.name
         for hand in player.hands:
-            for card in hand.cards:
-                print card
+            print "Is hand folded?", hand.folded
+            print hand
+            print hand.values()
             print "--"
         print "---------"
         action = player.get_action()
         player.perform_action(action)
         game.accomodate_player_action(player, action)
-        if len(player.hands) > 1:
-            for hand in player.hands:
-                for card in hand.cards:
-                    print card
     game.validate_player_hands()
+
+    # Get dealer action now that players have acted.
     dealer_action = dealer.get_action()
     dealer.perform_action(dealer_action)
 
@@ -75,6 +76,7 @@ while not game.over:
             break
 
     if players_finished:
+        print "players are finished"
         # Enter dealer loop until dealer is finished
         while not dealer.turn_over:
             action = dealer.get_action()
