@@ -62,17 +62,10 @@ class Player:
         """Check if any of the player's hands are invalid. If so, push their chips to the dealer."""
         pass
 
-    def get_hand_value(self, hand):
-        """Add up the cards in play and return their value."""
-        hand_sum = 0
-        for card in hand:
-            hand_sum += card.get_value()
-        return hand_sum
-
     def get_action(self):
         """Get input from the player to determine their next action."""
-        # input will require a loop until the player enters a valid action.
-        return self.get_user_input("Type an action: ")
+        # @TODO Utilize a separate UI module for this input
+        return self.get_user_input(str(self) + ", type an action: ")
 
     def fold_hand(self, hand):
         """Remove a hand from play."""

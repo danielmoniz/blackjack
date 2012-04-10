@@ -17,10 +17,10 @@ class Dealer(Player):
 
     def get_action(self):
         """Given the dealer's current hand situation, return the required action."""
-        if self.get_hand_value < 17:
-            return 'hit'
-        else:
-            return 'stand'
+        for value in self.get_hand().values():
+            if 17 <= value <= 21:
+                return 'stand'
+        return 'hit'
 
     def get_hand(self):
         """Return the dealer's hand. If he does not have one, return False."""

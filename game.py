@@ -49,15 +49,14 @@ class Game:
 
                     
         # @TODO Allow first-turn actions
-        # Set players' turns to not be over.
+        # Clear player hands and set players' turns to not be over.
         for player in self.players:
             player.purge_hands()
             player.set_turn_over(False)
-            # @TODO Move all chips.
 
         # clear dealer's hand
         self.dealer.purge_hands()
-
+        self.dealer.set_turn_over(False)
 
         # End the game if there are no more players.
         if len(self.players) == 0:
@@ -74,6 +73,10 @@ class Game:
         #hand1_val, hand2_val = hand1.best_value(), hand2.best_value()
         if hand1.folded:
             return 'lose'
+        elif hand2.folded:
+            print hand2, hand2.folded
+            print "dealer folded!"
+            return 'win'
         hand1_val = hand1.best_value()
         hand2_val = hand2.best_value()
         # Win or lose if the hand values are not equal -------
@@ -148,6 +151,7 @@ class Game:
 
         dealer_hand = Hand([self.deck.get_next_card()])
         self.dealer.assign_hand(dealer_hand)
+        print "is dealer's hand folded at start?", self.dealer.get_hand().folded
 
     # @TODO What is this function for if users are able to receive cards by
     # hitting?
@@ -162,10 +166,16 @@ class Game:
         for player in self.players:
             for hand in player.hands:
                 if hand.smallest_value() > 21:
-                    # @TODO Move bets
                     print "folded hand. value", hand.smallest_value()
                     player.fold_hand(hand)
             # if no hands remaining, end player's turn.
             valid_hands = [hand for hand in player.hands if not hand.folded]
             if len(valid_hands) == 0:
                 player.set_turn_over()
+
+    def validate_dealer_hand(self):
+        """Ensure the dealer's hand is not over 21, and that his hand is folded if he goes over."""
+        hand = self.dealer.get_hand()
+        if hand.smallest_value > 21:
+            self.dealer.fold_hand(hand)
+            self.dealer.set_turn_over()

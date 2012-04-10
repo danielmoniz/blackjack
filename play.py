@@ -34,7 +34,6 @@ from game import Game
             # disallow some first-turn actions.
             # continue to the start of the Game Loop.
         
-""" TESTING AREA """
 deck = Deck()
 deck.shuffle()
 # For now, create a single player. Should allow for more.
@@ -53,6 +52,7 @@ while not game.over:
     # Dealer only has one hand! Print out its information.
     print "Dealer hand:"
     print dealer.get_hand()
+    print dealer.get_hand().values()
     for player in players:
         print "---", player.chips, "CHIPS ---"
         print "---------", player.name
@@ -69,6 +69,7 @@ while not game.over:
     # Get dealer action now that players have acted.
     dealer_action = dealer.get_action()
     dealer.perform_action(dealer_action)
+    game.accomodate_player_action(dealer, action)
 
     # Check game state. Is everybody standing, surrendered, or over?
     players_finished = True
@@ -81,7 +82,10 @@ while not game.over:
         # Enter dealer loop until dealer is finished
         while not dealer.turn_over:
             action = dealer.get_action()
+            print "dealer action:", action
             dealer.perform_action(action)
+            game.accomodate_player_action(dealer, action)
+        game.validate_dealer_hand()
 
         # Turn is now over. Clean up the table and prepare for a new turn.
         game.end_turn()

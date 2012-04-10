@@ -69,7 +69,7 @@ class Hand:
         if len(valid_values) == 0:
             # The chosen value here should be irrelevant if the evaluate
             # function does its job.
-            return min(self.values)
+            return min(self.values())
         return max(valid_values)
 
     def fold(self):
