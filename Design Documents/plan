@@ -1,7 +1,5 @@
 - allow players to bet on hands
     - can initially limit this to their own hands
-- have chips be moved around
-- allow for splitting, doubling down, and surrendering
 
 - create interface API to allow for another interface to be plugged in
 
