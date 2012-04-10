@@ -43,7 +43,6 @@ class Game:
         # Evaluate hands, compare to dealer's, and move chips accordingly.
         self.move_chips()
 
-        # @TODO Allow first-turn actions
         # Clear player hands and dealer's hand
         for player in self.players:
             player.purge_hands()
@@ -159,11 +158,13 @@ class Game:
             # Add a single card to the hand.
             player.assign_new_card(self.deck.get_next_card(), hand)
         elif action == "surrender":
-            # @TODO Fill in this action
+            # Restore 50% (rounded down) of a bet's chips to its owner.
             bet_value, owner = hand.bet
             restore_value = bet_value / 2
             self.dealer.add_chips(bet_value - restore_value)
             owner.add_chips(restore_value)
+
+            # Fold the hand so that it is cleaned up later.
             hand.fold()
         else:
             return False
@@ -245,7 +246,7 @@ class Game:
                 card1, card2 = hand.cards
                 bet_value, owner = hand.bet
 
-                # @TODO Check if player can afford to split! If not,
+                # Check if player can afford to split! If not,
                 # un-split the hand and move on.
                 if not player.has_enough_chips(bet_value):
                     hand.unsplit()

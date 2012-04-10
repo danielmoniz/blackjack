@@ -13,8 +13,7 @@ class Deck:
         """Return the next card in the deck and remove it."""
         if self.get_num_cards() == 0:
             pass
-            # @TODO
-            # RESHUFFLE all cards in discard pile? Need to make a discard pile!
+            # @TODO RESHUFFLE all cards in discard pile? Need to make a discard pile!
         next_card = self.cards.pop()
         # Cards in a deck are flipped down, so they must be flipped.
         next_card.flip()

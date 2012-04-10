@@ -3,7 +3,6 @@ from hand import Hand
 class Player:
     """Describes each player object in the game."""
 
-    # @TODO
     def __init__(self, name = None):
         """Initialize chips and cards for a player.
         'first_turn' indicates whether it is the first turn of a round."""
@@ -85,7 +84,6 @@ class Player:
         return self.actions[action]()
 
 # FUNCTIONS FOR ACTIONS A PLAYER CAN TAKE
-    # @TODO
     def double_down(self):
         """Double wager, take a single card and finish."""
         print self.name, 'DOUBLE DOWN' # Test output
@@ -102,13 +100,11 @@ class Player:
         print self.name, 'STAND' # Test output
         pass
 
-    # @TODO
     def split(self):
         """If the two initial cards have the same value, separate them to make two hands."""
         print self.name, 'SPLIT' # Test output
         pass
 
-    # @TODO
     def surrender(self):
         """Give up a half-bet and retire from the game."""
         print self.name, 'SURRENDER' # Test output
