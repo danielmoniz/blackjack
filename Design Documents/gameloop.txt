@@ -1,0 +1,25 @@
+# generate initial players, dealer, and deck
+# initialize game board: deal hands, and anything else that needs to be done
+
+# GAME LOOP - retrieve player input until they have lost the round or are
+# standing (I think)
+
+# while game is not over:
+    # for each player at the table:
+        # get player input and act on that action
+    # dealer performs action (reveals card, I think?)
+
+    # check state of game. Is everybody standing or surrendered?
+    # (do this by asking each player for input, and having them all be
+    # unable to do so.)
+        # if everybody is finished, 
+            # enter dealer action loop until round is complete
+            # Turn complete. Move chips, clear cards, adjust the turn counter,
+            # allow first-turn actions, set players to have their turns not be
+            # over. (etc!)
+            # if there are no more players, or they have no chips:
+                # Set the game to be over
+            
+        # ELSE, ie. somebody is not finished:
+            # disallow some first-turn actions.
+            # continue to the start of the Game Loop.

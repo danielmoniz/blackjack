@@ -5,43 +5,24 @@ from dealer import Dealer
 from deck import Deck
 from game import Game
 
-# Run the actual game loop, turn by turn.
-
+"""This file exists to start the game and help the Game class to direct the flow. 
+It initializes the game object and runs the primary game loop. The primary game loop, in short, does the following:
+1. receive input actions from each player.
+2. Let the dealer have an action.
+3. If everybody is done, the dealer does actions until he/she is finished.
+4. End the turn and start a new one."""
 
 # generate initial players, dealer, and deck
-# initialize game board: deal hands, and anything else that needs to be done
-
-# GAME LOOP - retrieve player input until they have lost the round or are
-# standing (I think)
-
-# while game is not over:
-    # for each player at the table:
-        # get player input and act on that action
-    # dealer performs action (reveals card, I think?)
-
-    # check state of game. Is everybody standing or surrendered?
-    # (do this by asking each player for input, and having them all be
-    # unable to do so.)
-        # if everybody is finished, 
-            # enter dealer action loop until round is complete
-            # Turn complete. Move chips, clear cards, adjust the turn counter,
-            # allow first-turn actions, set players to have their turns not be
-            # over. (etc!)
-            # if there are no more players, or they have no chips:
-                # Set the game to be over
-            
-        # ELSE, ie. somebody is not finished:
-            # disallow some first-turn actions.
-            # continue to the start of the Game Loop.
-        
 deck = Deck()
 deck.shuffle()
 # For now, create a single player. Should allow for more.
+# @TODO Ask for number of players and their names.
 players = [Player("Human 1")]
 dealer = Dealer("Dealer")
 
 # Initialize game object
 game = Game(deck, dealer, players)
+# Deal hands and have players place bets.
 game.start_turn()
 
 # GAME LOOP - retrieve player input until they have lost the round or are
@@ -61,9 +42,12 @@ while not game.over:
             print hand.values()
             print "--"
         print "---------"
+        # Get the player's action and act on it.
         action = player.get_action()
         game.accomodate_player_action(player, action)
-    game.validate_player_hands()
+
+    # Fold any hands that are invalid and end the players' turns.
+    #game.validate_player_hands()
 
     # Get dealer action now that players have acted.
     dealer_action = dealer.get_action()
@@ -82,11 +66,10 @@ while not game.over:
             action = dealer.get_action()
             print "dealer action:", action
             game.accomodate_player_action(dealer, action)
-        #game.validate_dealer_hand()
 
         # Turn is now over. Clean up the table and prepare for a new turn.
         game.end_turn()
         game.start_turn()
     else:
-        # disallow first-turn actions. Move to start of loop
+        # disallow first-turn actions. Move to start of game loop
         continue
