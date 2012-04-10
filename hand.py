@@ -5,13 +5,15 @@ class Hand:
     
     def __init__(self, cards = None, bet = None):
         """'cards' is a list of cards (card objects) in the hand.
-        'bets' is a tuple as follows: (bet_value, bet_owner)."""
+        'bets' is a tuple as follows: (bet_value, bet_owner).
+        'split' indicates whether a hand should be split when possible."""
         if cards == None:
             self.cards = []
         else:
             self.cards = cards
         self.bet = bet
         self.folded = False
+        self.split = False
 
     def __str__(self):
         """Returns a reasonable string representation of the hand."""
@@ -90,3 +92,11 @@ class Hand:
         if len(self.cards) == 2 and self.largest_value() == 21:
             return True
         return False
+
+    def num_cards(self):
+        """Return the number of cards in the hand."""
+        return len(self.cards)
+
+    def prepare_split(self):
+        """Indicate that the hand should be split when possible."""
+        self.split = True

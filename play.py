@@ -38,7 +38,8 @@ while not game.over:
     for player in players:
         print "---", player.chips, "CHIPS ---"
         print "---------", player.name
-        for hand in player.hands:
+        hands_copy = player.hands[:]
+        for hand in hands_copy:
             print hand
             print hand.values()
             print "--"
@@ -46,6 +47,9 @@ while not game.over:
             action = player.get_action()
             game.accomodate_player_action(player, action, hand)
         print "---------"
+        # Split any hands that need splitting.
+
+    game.split_player_hands()
 
     # Fold any hands that are invalid and end the players' turns.
     #game.validate_player_hands()

@@ -56,6 +56,10 @@ class Player:
         """Remove all hands for this player."""
         del self.hands[:]
 
+    def purge_hand(self, hand):
+        """Remove the specific hand."""
+        self.hands.remove(hand)
+
     def get_action(self):
         """Get input from the player to determine their next action."""
         # @TODO Utilize a separate UI module for this input

@@ -132,6 +132,12 @@ class Game:
         elif action == 'split':
             # Split their hand in two if it matches a set of criteria.
             # @TODO
+            if hand.num_cards() == 2:
+                card1, card2 = hand.cards
+                if card1.get_value() == card2.get_value():
+                    hand.prepare_split()
+            else:
+                return False
             pass
         elif action == 'double down':
             # Double a player's bet and give them one more card.
@@ -204,6 +210,28 @@ class Game:
             valid_hands = [hand for hand in player.hands if not hand.folded]
             if len(valid_hands) == 0:
                 player.set_turn_over()
+
+    def split_player_hands(self):
+        """Iterate through players and split any hands indicating that they
+        need to be split.
+        NOTE: Assumes that hand already fits the criteria for splitting."""
+        for player in self.players:
+            hands_copy = player.hands[:]
+            for hand in hands_copy:
+                if hand.split:
+                    print hand
+                    card1, card2 = hand.cards
+
+                    # Delete the old hand and make two new ones
+                    player.purge_hand(hand)
+                    new_card1 = self.deck.get_next_card()
+                    new_hand1 = Hand([card1, new_card1])
+                    
+                    new_card2 = self.deck.get_next_card()
+                    new_hand2 = Hand([card2, new_card2])
+
+                    player.assign_hand(new_hand1)
+                    player.assign_hand(new_hand2)
 
 """
 Deprecated: The dealer's hand is now validated every time he/she hits.
