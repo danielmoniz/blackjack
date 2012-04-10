@@ -15,9 +15,11 @@ class Game:
         self.game_over = True
 
     def start_turn(self):
-        """Deal new hands, and perform any other start-of-turn actions."""
+        """Deal new hands, and take initial user bets (minimum). Perform any
+        other start-of-turn actions."""
         self.deal_initial_hands()
-        # @TODO Ask for bets from each player.
+        # Ask for bets from each player.
+        # @TODO Allow user to select a bet other than the minimum.
         for player in self.players:
             player.place_bet(self.min_bet)
 
@@ -33,6 +35,7 @@ class Game:
             for hand in player.hands:
                 outcome = self.evaluate_hands(hand, dealer_hand)
                 value, owner = hand.bet[0], hand.bet[1]
+                print player, "score:", hand.best_value()
                 print owner
                 if outcome == 'win':
                     owner.add_chips(2 * value)
@@ -141,7 +144,7 @@ class Game:
             print new_hand
             print "----------------"
             player.assign_hand(new_hand)
-            player.place_bet(self.min_bet, new_hand)
+            #player.place_bet(self.min_bet, new_hand)
 
         dealer_hand = Hand([self.deck.get_next_card()])
         self.dealer.assign_hand(dealer_hand)
