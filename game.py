@@ -218,20 +218,33 @@ class Game:
         for player in self.players:
             hands_copy = player.hands[:]
             for hand in hands_copy:
-                if hand.split:
-                    print hand
-                    card1, card2 = hand.cards
+                if not hand.split:
+                    return False
 
-                    # Delete the old hand and make two new ones
-                    player.purge_hand(hand)
-                    new_card1 = self.deck.get_next_card()
-                    new_hand1 = Hand([card1, new_card1])
-                    
-                    new_card2 = self.deck.get_next_card()
-                    new_hand2 = Hand([card2, new_card2])
+                card1, card2 = hand.cards
+                bet_value, owner = hand.bet
 
-                    player.assign_hand(new_hand1)
-                    player.assign_hand(new_hand2)
+                # @TODO Check if player can afford to split! If not,
+                # un-split the hand and move on.
+                if not player.has_enough_chips(bet_value):
+                    hand.unsplit()
+                    return False
+
+                # Return bet value to owner
+                owner.add_chips(bet_value)
+
+                # Delete the old hand and make two new ones
+                player.purge_hand(hand)
+                new_card1 = self.deck.get_next_card()
+                new_hand1 = Hand([card1, new_card1])
+                
+                new_card2 = self.deck.get_next_card()
+                new_hand2 = Hand([card2, new_card2])
+
+                player.assign_hand(new_hand1)
+                player.assign_hand(new_hand2)
+                owner.place_bet(bet_value, new_hand1)
+                owner.place_bet(bet_value, new_hand2)
 
 """
 Deprecated: The dealer's hand is now validated every time he/she hits.

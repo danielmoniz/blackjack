@@ -100,3 +100,7 @@ class Hand:
     def prepare_split(self):
         """Indicate that the hand should be split when possible."""
         self.split = True
+
+    def unsplit(self):
+        """Indicate that the hand should be split when possible."""
+        self.split = False
