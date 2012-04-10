@@ -102,7 +102,6 @@ class Player:
         """Give up a half-bet and retire from the game."""
         print self.name, 'SURRENDER' # Test output
         self.turn_over = True
-        pass
 
     def place_bet(self, value, hand = None):
         """Makes a player place a bet on a specific hand that belongs to them.

@@ -137,14 +137,15 @@ class Game:
                 if card1.get_value() == card2.get_value():
                     hand.prepare_split()
             else:
+                # If they try to split when it is not possible, hit instead.
+                # @TODO This is silly; they should simply be told they cannot
+                # split and re-prompted.
+                self.accomodate_player_action(player, 'hit', hand)
                 return False
             pass
         elif action == 'double':
             # Double a player's bet and give them one more card.
-            # @TODO
-            # if they do not have enough money, assume they hit.
             if not player.has_enough_chips(hand.get_bet_value()):
-                pass
                 print "Not enough chips for a double down! Hitting instead."
                 self.accomodate_player_action(player, 'hit', hand)
                 return False
@@ -159,11 +160,14 @@ class Game:
             player.assign_new_card(self.deck.get_next_card(), hand)
         elif action == "surrender":
             # @TODO Fill in this action
-            pass
+            bet_value, owner = hand.bet
+            restore_value = bet_value / 2
+            self.dealer.add_chips(bet_value - restore_value)
+            owner.add_chips(restore_value)
+            hand.fold()
         else:
             return False
 
-        # @TODO This needs to act on a per-hand basis, not on the whole player!
         hand.validate()
         # if no hands remaining, end player's turn.
         valid_hands = [hand for hand in player.hands if not hand.folded]
