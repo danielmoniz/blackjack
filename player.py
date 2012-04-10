@@ -24,6 +24,7 @@ class Player:
         """Return the name of a player, or Player X if not set."""
         if self.name == None:
             return "Human player"
+        return self.name
 
     def get_allowed_actions(self):
         """Return the actions currently available to the player."""
@@ -110,10 +111,19 @@ class Player:
         pass
 
     # @TODO Make this do something.
-    def place_bet(self, size_of_bet, hand = None):
+    def place_bet(self, value, hand = None):
         """Makes a player place a bet on a specific hand that belongs to them.
-        If no hand is provided, it defaults to their first hand."""
-        pass
+        If no hand is provided, it defaults to their first hand.
+        Returns False if player does not have enough chips."""
+        if self.chips - value < 0:
+            return False
+        # Default to first player hand.
+        if hand == None:
+            hand = self.hands[0]
+        hand.place_bet(value, self)
+        self.remove_chips(value)
+
+        return True
 
 
     def get_user_input(self, message):
@@ -126,3 +136,17 @@ class Player:
 
     def set_turn_over(self, status = True):
         self.turn_over = status
+
+    def add_chips(self, value = 0):
+        """Increase the chips by the value given (or decrease by the negative
+        value)."""
+        self.chips += value
+
+    def remove_chips(self, value = 0):
+        """Reduce the chips by the value given. Wraps self.add_chips(). Do not
+        allow negative values!"""
+        if value < 0:
+            return False
+        else:
+            self.add_chips(-value)
+            return True

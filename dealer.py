@@ -21,3 +21,10 @@ class Dealer(Player):
             return 'hit'
         else:
             return 'stand'
+
+    def get_hand(self):
+        """Return the dealer's hand. If he does not have one, return False."""
+        try:
+            return self.hands[0]
+        except KeyError:
+            return False

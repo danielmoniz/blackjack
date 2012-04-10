@@ -49,10 +49,14 @@ game.start_turn()
 # standing (I think)
 while not game.over:
     # For each player at table, get actions, followed by dealer's action
+    print "-------------"
+    # Dealer only has one hand! Print out its information.
+    print "Dealer hand:"
+    print dealer.get_hand()
     for player in players:
+        print "---", player.chips, "CHIPS ---"
         print "---------", player.name
         for hand in player.hands:
-            print "Is hand folded?", hand.folded
             print hand
             print hand.values()
             print "--"
@@ -74,7 +78,6 @@ while not game.over:
             break
 
     if players_finished:
-        print "players are finished"
         # Enter dealer loop until dealer is finished
         while not dealer.turn_over:
             action = dealer.get_action()

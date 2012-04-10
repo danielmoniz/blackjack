@@ -16,8 +16,6 @@ class Game:
 
     def start_turn(self):
         """Deal new hands, and perform any other start-of-turn actions."""
-
-        #print "in start_turn"
         self.deal_initial_hands()
         # @TODO Ask for bets from each player.
         for player in self.players:
@@ -27,8 +25,26 @@ class Game:
     def end_turn(self):
         """Perform any tasks required at the end of a turn. Eg. empty hands and
         compare dealer score to move chips around accordingly."""
-        #dealer_score = self.dealer.hands[0].best_value()
-        #print "Dealer score:", dealer_score
+        # Evaluate hands and move chips accordingly.
+        dealer_hand = self.dealer.get_hand()
+        dealer_score = self.dealer.get_hand().best_value()
+        print "Dealer score:", dealer_score
+        for player in self.players:
+            for hand in player.hands:
+                outcome = self.evaluate_hands(hand, dealer_hand)
+                value, owner = hand.bet[0], hand.bet[1]
+                print owner
+                if outcome == 'win':
+                    owner.add_chips(2 * value)
+                    print str(owner), "won", value, "chips!"
+                elif outcome == 'push':
+                    # Replace chips
+                    owner.add_chips(value)
+                    print str(owner), "broke even with", value, "chips."
+                elif outcome == 'lose':
+                    print str(owner), "lost", value, "chips."
+
+                    
         # @TODO Allow first-turn actions
         # Set players' turns to not be over.
         for player in self.players:
@@ -36,11 +52,41 @@ class Game:
             player.set_turn_over(False)
             # @TODO Move all chips.
 
+        # clear dealer's hand
+        self.dealer.purge_hands()
+
+
         # End the game if there are no more players.
         if len(self.players) == 0:
             self.game_over = True
 
         return False
+
+    def evaluate_hands(self, hand1, hand2):
+        """Evaluates two valid (ie <= 21) hands from the point of view of the
+        first. Returns a number of different outcomes depending on the hands:
+        'win', 'lose', 'push'. A 'push' occurs when two hands are tied and neither or both of
+        them are blackjacks. (If the two are tied and one is a blackjack while
+        the other isn't, it is a win or a loss.)"""
+        #hand1_val, hand2_val = hand1.best_value(), hand2.best_value()
+        if hand1.folded:
+            return 'lose'
+        hand1_val = hand1.best_value()
+        hand2_val = hand2.best_value()
+        # Win or lose if the hand values are not equal -------
+        if hand1_val > hand2_val:
+            return 'win'
+        elif hand1_val < hand2_val:
+            return 'lose'
+        else: # in the case of a tie
+            if hand1.is_blackjack() == hand2.is_blackjack():
+                return 'push'
+            else:
+                # At this point, hand1 having blackjack implies hand2 does not
+                if hand1.is_blackjack():
+                    return 'win'
+                else:
+                    return 'lose'
 
     def accomodate_player_action(self, player, action):
         """This function takes a player and an action as arguments and ensures that their action is performed.
@@ -95,6 +141,10 @@ class Game:
             print new_hand
             print "----------------"
             player.assign_hand(new_hand)
+            player.place_bet(self.min_bet, new_hand)
+
+        dealer_hand = Hand([self.deck.get_next_card()])
+        self.dealer.assign_hand(dealer_hand)
 
     # @TODO What is this function for if users are able to receive cards by
     # hitting?
