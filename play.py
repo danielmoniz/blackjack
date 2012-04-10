@@ -62,14 +62,12 @@ while not game.over:
             print "--"
         print "---------"
         action = player.get_action()
-        player.perform_action(action)
         game.accomodate_player_action(player, action)
     game.validate_player_hands()
 
     # Get dealer action now that players have acted.
     dealer_action = dealer.get_action()
-    dealer.perform_action(dealer_action)
-    game.accomodate_player_action(dealer, action)
+    game.accomodate_player_action(dealer, dealer_action)
 
     # Check game state. Is everybody standing, surrendered, or over?
     players_finished = True
@@ -83,7 +81,6 @@ while not game.over:
         while not dealer.turn_over:
             action = dealer.get_action()
             print "dealer action:", action
-            dealer.perform_action(action)
             game.accomodate_player_action(dealer, action)
         #game.validate_dealer_hand()
 

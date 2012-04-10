@@ -143,3 +143,10 @@ class Player:
         else:
             self.add_chips(-value)
             return True
+
+    def has_enough_chips(self, min_bet):
+        """Determine whether or not a player has enough chips to play. Return
+        True is so, False otherwise."""
+        if self.chips >= min_bet:
+            return True
+        return False

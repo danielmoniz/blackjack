@@ -11,6 +11,8 @@ class Deck:
 
     def get_next_card(self):
         """Return the next card in the deck and remove it."""
+        # @TODO IMPORTANT Ensure that the deck is reshuffled if there are no
+        # more cards.
         next_card = self.cards.pop()
         next_card.flip()
         return next_card
