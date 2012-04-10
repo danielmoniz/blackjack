@@ -3,27 +3,25 @@ import random
 
 class Deck:
     def __init__(self, num_decks = 2):
-# randomly generate cards here
+        """Randomly generate a deck of the given size."""
         self.suits = ['hearts', 'clubs', 'spades', 'diamonds']
         self.cards_per_suit = 13
-        # ^^^ relies on suits being set
+        
         self.cards = self.generate_deck(num_decks)
 
     def get_next_card(self):
         """Return the next card in the deck and remove it."""
-        # @TODO IMPORTANT Ensure that the deck is reshuffled if there are no
-        # more cards.
+        if self.get_num_cards() == 0:
+            pass
+            # @TODO
+            # RESHUFFLE all cards in discard pile? Need to make a discard pile!
         next_card = self.cards.pop()
+        # Cards in a deck are flipped down, so they must be flipped.
         next_card.flip()
         return next_card
-    
-    def get_num_cards(self):
-        """Return the total number of cards left in the deck."""
-        return len(self.cards)
 
     def generate_deck(self, num_decks):
         """A helper function to generate a deck."""
-        pass
         cards = []
         # For each deck, create a card in each suit at each value.
         for i in range(num_decks):
@@ -34,6 +32,9 @@ class Deck:
         return cards
 
     def shuffle(self):
-        """Completely shuffles a deck. Returns nothing."""
+        """Completely shuffles a deck in place. Returns nothing."""
         random.shuffle(self.cards)
-        return True
+    
+    def get_num_cards(self):
+        """Return the total number of cards left in the deck."""
+        return len(self.cards)
