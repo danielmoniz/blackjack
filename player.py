@@ -1,6 +1,6 @@
 from hand import Hand
-class Player:
 
+class Player:
     """Describes each player object in the game."""
 
     # @TODO
@@ -33,7 +33,7 @@ class Player:
     # NOTE: This function is to be deprecated for a more dynamic funciton that
     # allows for a specific hand to be given a new card, not just a player.
     def assign_new_card(self, new_card, hand = None):
-
+        """Deal a player a new card. If he has no hands, create one."""
         # If player has no hands, create one.
         if len(self.hands) == 0:
             self.hands.append(Hand([new_card]))
@@ -50,17 +50,11 @@ class Player:
 
     def assign_hand(self, hand):
         """Deal a new hand to the player."""
-        #for hand in 
         self.hands.append(hand)
 
     def purge_hands(self):
         """Remove all hands for this player."""
         del self.hands[:]
-
-    # @TODO This may not be necessary!
-    def validate_hands(self):
-        """Check if any of the player's hands are invalid. If so, push their chips to the dealer."""
-        pass
 
     def get_action(self):
         """Get input from the player to determine their next action."""
@@ -70,13 +64,13 @@ class Player:
     def fold_hand(self, hand):
         """Remove a hand from play."""
         hand.fold()
-        return True
 
     def perform_action(self, action):
         """Take in an action and act on it."""
         return self.actions[action]()
 
 # FUNCTIONS FOR ACTIONS A PLAYER CAN TAKE
+    # @TODO
     def double_down(self):
         """Double wager, take a single card and finish."""
         pass
@@ -92,18 +86,19 @@ class Player:
         print self.name, 'STAND' # Test output
         pass
 
+    # @TODO
     def split(self):
         """If the two initial cards have the same value, separate them to make two hands."""
         print self.name, 'SPLIT' # Test output
         pass
 
+    # @TODO
     def surrender(self):
         """Give up a half-bet and retire from the game."""
         print self.name, 'SURRENDER' # Test output
         self.turn_over = True
         pass
 
-    # @TODO Make this do something.
     def place_bet(self, value, hand = None):
         """Makes a player place a bet on a specific hand that belongs to them.
         If no hand is provided, it defaults to their first hand.
@@ -118,8 +113,9 @@ class Player:
 
         return True
 
-
     def get_user_input(self, message):
+        """Gets command-line user input given a message.
+        @TODO This should be in a separate UI module!!"""
         user_input = raw_input(message)
         while user_input not in self.get_allowed_actions():
             print "Not an allowed action!"
@@ -128,6 +124,7 @@ class Player:
         return user_input
 
     def set_turn_over(self, status = True):
+        """Sets a turn to be True or False (True by default)."""
         self.turn_over = status
 
     def add_chips(self, value = 0):
