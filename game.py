@@ -23,8 +23,8 @@ class Game:
         chips for a minimum bet. End the game if there are no more players."""
         # Set players and dealer to a new turn.
         for player in self.players:
-            player.set_turn_over(False)
-        self.dealer.set_turn_over(False)
+            player.set_new_turn()
+        self.dealer.set_new_turn()
 
         self.deal_initial_hands()
         # Ask for bets from each player.

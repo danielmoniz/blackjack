@@ -5,11 +5,13 @@ class Player:
 
     # @TODO
     def __init__(self, name = None):
-        """Initialize chips and cards for a player."""
+        """Initialize chips and cards for a player.
+        'first_turn' indicates whether it is the first turn of a round."""
         # Other things might need to be initialized.
         self.name = name
         self.chips = 500
         self.hands = []
+        self.first_turn = True
         self.turn_over = False
         self.actions = {
             'double': self.double_down, 
@@ -27,8 +29,12 @@ class Player:
         return self.name
 
     def get_allowed_actions(self):
-        """Return the actions currently available to the player."""
-        return ['double', 'hit', 'stand', 'split', 'surrender']
+        """Return the actions currently available to the player. If it is the
+        first turn of a round, there are more actions available."""
+        if self.first_turn:
+            return ['double', 'hit', 'stand', 'split', 'surrender']
+        else:
+            return ['hit', 'stand', 'surrender']
 
     # NOTE: This function is to be deprecated for a more dynamic funciton that
     # allows for a specific hand to be given a new card, not just a player.
@@ -61,9 +67,14 @@ class Player:
         self.hands.remove(hand)
 
     def get_action(self):
-        """Get input from the player to determine their next action."""
+        """Get input from the player to determine their next action.
+        Also set the player's first_turn property to False!
+        Therefore, ALL player actions must go through this function."""
         # @TODO Utilize a separate UI module for this input
-        return self.get_user_input(str(self) + ", type an action: ")
+
+        action = self.get_user_input(str(self) + ", type an action: ")
+        self.first_turn = False
+        return action
 
     def fold_hand(self, hand):
         """Remove a hand from play."""
@@ -127,9 +138,14 @@ class Player:
 
         return user_input
 
-    def set_turn_over(self, status = True):
+    def set_new_turn(self):
+        """Set a player's properties to reflect that it is a new turn."""
+        self.first_turn = True
+        self.turn_over = False
+
+    def set_turn_over(self):
         """Sets a turn to be True or False (True by default)."""
-        self.turn_over = status
+        self.turn_over = True
 
     def add_chips(self, value = 0):
         """Increase the chips by the value given (or decrease by the negative
