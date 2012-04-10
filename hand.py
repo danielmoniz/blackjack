@@ -31,6 +31,10 @@ class Hand:
         """Place a bet from the given player of the given chips value."""
         self.bet = (value, player)
 
+    def clear_bet(self):
+        """Removes the bet from a hand."""
+        self.bet = None
+
     def values(self):
         """Add up the cards in play and return their highest and lowest values
         tuple form. That is, if there are n aces in the hand, the tuple will be
@@ -104,3 +108,11 @@ class Hand:
     def unsplit(self):
         """Indicate that the hand should be split when possible."""
         self.split = False
+
+    def get_bet_value(self):
+        """Return the chip value of the bet."""
+        return self.bet[0]
+
+    def get_bet_owner(self):
+        """Return the owner of the bet."""
+        return self.bet[1]

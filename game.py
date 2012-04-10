@@ -107,7 +107,7 @@ class Game:
                     print str(owner), "lost", value, "chips."
                     self.dealer.add_chips(value)
 
-    # @TODO This function probably needs breaking up/refactoring.
+    # @TODO This function DEFINITELY needs breaking up/refactoring.
     def accomodate_player_action(self, player, action, hand):
         """This function takes a player and an action as arguments and ensures that their action is performed.
         This is from the point of view of the game table itself. The player
@@ -139,9 +139,26 @@ class Game:
             else:
                 return False
             pass
-        elif action == 'double down':
+        elif action == 'double':
             # Double a player's bet and give them one more card.
             # @TODO
+            # if they do not have enough money, assume they hit.
+            if not player.has_enough_chips(hand.get_bet_value()):
+                pass
+                print "Not enough chips for a double down! Hitting instead."
+                self.accomodate_player_action(player, 'hit', hand)
+                return False
+
+            # Return chips to owner, but double bet on the hand
+            bet_value, owner = hand.bet
+            owner.add_chips(bet_value)
+            hand.clear_bet()
+            owner.place_bet(2 * bet_value, hand)
+
+            # Add a single card to the hand.
+            player.assign_new_card(self.deck.get_next_card(), hand)
+        elif action == "surrender":
+            # @TODO Fill in this action
             pass
         else:
             return False

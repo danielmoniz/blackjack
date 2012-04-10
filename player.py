@@ -77,7 +77,8 @@ class Player:
     # @TODO
     def double_down(self):
         """Double wager, take a single card and finish."""
-        pass
+        print self.name, 'DOUBLE DOWN' # Test output
+        self.set_turn_over()
 
     def hit(self):
         """Ie. take a card."""
