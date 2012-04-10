@@ -3,10 +3,13 @@ from card import Card
 class Hand:
     """Defines a single hand. Also stores bets placed on a given hand, and who placed those bets."""
     
-    def __init__(self, cards = [], bets = []):
+    def __init__(self, cards = None, bets = []):
         """'cards' is a list of cards (card objects) in the hand.
         'bets' is a list of tuples as follows: (bet_value, bet_owner)."""
-        self.cards = cards
+        if cards == None:
+            self.cards = []
+        else:
+            self.cards = cards
         self.bets = bets
         self.folded = False
 

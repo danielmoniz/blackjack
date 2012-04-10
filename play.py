@@ -50,8 +50,6 @@ game.start_turn()
 while not game.over:
     # For each player at table, get actions, followed by dealer's action
     for player in players:
-        """for hand in player.hands:
-            player.hands.remove(hand)"""
         print "---------", player.name
         for hand in player.hands:
             print "Is hand folded?", hand.folded

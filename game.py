@@ -16,11 +16,11 @@ class Game:
 
     def start_turn(self):
         """Deal new hands, and perform any other start-of-turn actions."""
+
         #print "in start_turn"
         self.deal_initial_hands()
         # @TODO Ask for bets from each player.
         for player in self.players:
-            pass
             player.place_bet(self.min_bet)
 
 
@@ -31,17 +31,11 @@ class Game:
         #print "Dealer score:", dealer_score
         # @TODO Allow first-turn actions
         # Set players' turns to not be over.
-        print "ENDING TURN"
-        for i in range(len(self.players)):
-            del self.players[i].hands
-            self.players[i].hands = []
-        """for player in self.players:
-            del player.hands
-            player.hands = []
+        for player in self.players:
+            player.purge_hands()
             player.set_turn_over(False)
             # @TODO Move all chips.
-            # clear all hands
-            player.purge_hands()"""
+
         # End the game if there are no more players.
         if len(self.players) == 0:
             self.game_over = True
@@ -94,12 +88,12 @@ class Game:
         num_cards = 2
         for player in self.players:
             new_hand = Hand()
-            print "Newly dealt cards:"
             for i in range(num_cards):
                 new_card = self.deck.get_next_card()
                 new_hand.add_card(new_card)
-                print new_card,
-            print ""
+            print "Newly dealt cards:"
+            print new_hand
+            print "----------------"
             player.assign_hand(new_hand)
 
     # @TODO What is this function for if users are able to receive cards by
@@ -112,7 +106,6 @@ class Game:
     def validate_player_hands(self):
         """Iterate through players in the game, checking their hands. If any
         are invalid (over 21), remove them and move chips accordingly."""
-        print "validating player hands"
         for player in self.players:
             for hand in player.hands:
                 if hand.smallest_value() > 21:

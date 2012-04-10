@@ -49,20 +49,12 @@ class Player:
 
     def assign_hand(self, hand):
         """Deal a new hand to the player."""
+        #for hand in 
         self.hands.append(hand)
 
     def purge_hands(self):
-        """Remove all hands."""
-        """print "PURGING HANDS"
-        for hand in self.hands:
-            print hand"""
-        del self.hands
-        self.hands = []
-        """print "-----"
-        for hand in self.hands:
-            print hand
-        print "FINISHED PURGING HANDS"
-        """
+        """Remove all hands for this player."""
+        del self.hands[:]
 
     # @TODO This may not be necessary!
     def validate_hands(self):
