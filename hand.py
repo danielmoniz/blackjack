@@ -12,9 +12,6 @@ class Hand:
             self.cards = cards
         self.bet = bet
         self.folded = False
-        # @TODO This could be true if two initial cards are provided that make
-        # up a blackjack.
-        self.is_blackjack = False
 
     def __str__(self):
         """Returns a reasonable string representation of the hand."""
@@ -26,7 +23,6 @@ class Hand:
     def add_card(self, new_card):
         """Adds a card to a hand."""
         self.cards.append(new_card)
-        return True
 
     # @TODO This should be done with a list of bets, not a single bet.
     def place_bet(self, value, player):
@@ -67,13 +63,13 @@ class Hand:
         without being over."""
         valid_values = [value for value in self.values() if value <= 21]
         if len(valid_values) == 0:
-            # The chosen value here should be irrelevant if the evaluate
-            # function does its job.
+            # Return any value > 21. min(values) works fine.
             return min(self.values())
+        # Return the maximum value that is <= 21.
         return max(valid_values)
 
     def fold(self):
-        """Fold a hand. Simply makes it inactive for later cleanup."""
+        """Folds a hand. Simply makes it inactive for later cleanup."""
         self.folded = True
 
     def validate(self):
@@ -86,7 +82,7 @@ class Hand:
 
         return True
 
-    def get_blackjack(self):
+    def is_blackjack(self):
         """Return True if the hand is made up of exactly one one Ace and a face card. Returns False otherwise.
         Two conditions to being a blackjack:
             1. There are exactly two cards.

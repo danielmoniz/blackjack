@@ -73,11 +73,11 @@ class Game:
         elif player_val < dealer_val:
             return 'lose'
         else: # in the case of a tie
-            if player_hand.get_blackjack() == dealer_hand.get_blackjack():
+            if player_hand.is_blackjack() == dealer_hand.is_blackjack():
                 return 'push'
             else:
                 # At this point, player_hand having blackjack implies dealer_hand does not
-                if player_hand.get_blackjack():
+                if player_hand.is_blackjack():
                     return 'win'
                 else:
                     return 'lose'
@@ -208,8 +208,8 @@ class Game:
 """
 Deprecated: The dealer's hand is now validated every time he/she hits.
     def validate_dealer_hand(self):
-        """Ensure the dealer's hand is not over 21, and that his hand is folded
-        if he goes over."""
+        #Ensure the dealer's hand is not over 21, and that his hand is folded
+        if he goes over.
         hand = self.dealer.get_hand()
         if hand.smallest_value > 21:
             self.dealer.fold_hand(hand)
