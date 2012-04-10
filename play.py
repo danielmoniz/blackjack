@@ -15,6 +15,7 @@ It initializes the game object and runs the primary game loop. The primary game 
 # generate initial players, dealer, and deck
 deck = Deck()
 deck.shuffle()
+
 # For now, create a single player. Should allow for more.
 # @TODO Ask for number of players and their names.
 players = [Player("Human 1")]
@@ -41,17 +42,17 @@ while not game.over:
             print hand
             print hand.values()
             print "--"
+            # Get the player's action and act on it.
+            action = player.get_action()
+            game.accomodate_player_action(player, action, hand)
         print "---------"
-        # Get the player's action and act on it.
-        action = player.get_action()
-        game.accomodate_player_action(player, action)
 
     # Fold any hands that are invalid and end the players' turns.
     #game.validate_player_hands()
 
     # Get dealer action now that players have acted.
     dealer_action = dealer.get_action()
-    game.accomodate_player_action(dealer, dealer_action)
+    game.accomodate_player_action(dealer, dealer_action, dealer.get_hand())
 
     # Check game state. Is everybody standing, surrendered, or over?
     players_finished = True
@@ -65,7 +66,7 @@ while not game.over:
         while not dealer.turn_over:
             action = dealer.get_action()
             print "dealer action:", action
-            game.accomodate_player_action(dealer, action)
+            game.accomodate_player_action(dealer, action, dealer.get_hand())
 
         # Turn is now over. Clean up the table and prepare for a new turn.
         game.end_turn()

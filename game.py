@@ -108,12 +108,13 @@ class Game:
                     self.dealer.add_chips(value)
 
     # @TODO This function probably needs breaking up/refactoring.
-    def accomodate_player_action(self, player, action):
+    def accomodate_player_action(self, player, action, hand):
         """This function takes a player and an action as arguments and ensures that their action is performed.
         This is from the point of view of the game table itself. The player
         elects to make an action, and they carry out part of the required
         tasks. The game itself then provides them with new cards (or what have
-        you) should they need them.
+        you) should they need them. Since every action takes place on a
+        specific hand, a hand argument is required.
         Returns False if the action is bad, True if everything works."""
         # Delegate any personal functionality (eg. ending one's turn) to the
         # player class.
@@ -123,7 +124,7 @@ class Game:
         if action == 'hit':
             # Deal a single card to the player.
             new_card = self.deck.get_next_card()
-            player.assign_new_card(new_card)
+            player.assign_new_card(new_card, hand)
             print "Dealt:", new_card
         elif action == 'stand':
             # Do nothing; the player has ended their turn.
@@ -140,7 +141,6 @@ class Game:
             return False
 
         # @TODO This needs to act on a per-hand basis, not on the whole player!
-        hand = player.hands[0] # @TODO THIS IS TEMPORARY
         hand.validate()
         # if no hands remaining, end player's turn.
         valid_hands = [hand for hand in player.hands if not hand.folded]
