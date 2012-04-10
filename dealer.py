@@ -1,14 +1,23 @@
 from player import Player
 
 class Dealer(Player):
+    """The Dealer class extends the Player class because of their similar
+    functionality in the game. In this implementation, the dealer is not
+    responsible for actually handing out cards; the Game class is responsible
+    for that. Instead, the dealer is the common opponent to all other
+        players."""
 
     def __init__(self, name = None):
+        """Initialize in the same way as a Player, but the dealer gets
+        unlimited chips."""
         Player.__init__(self, name)
         self.chips = float("inf")
 
     def __str__(self):
         """Return some string representation for the dealer, eg. 'Dealer'."""
-        return "Dealer"
+        if self.name == None:
+            return "Dealer"
+        return self.name
 
     def get_allowed_actions(self):
         """Return the allowed actions for the dealer. Note that they cannot
