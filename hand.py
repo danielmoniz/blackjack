@@ -76,11 +76,21 @@ class Hand:
         """Fold a hand. Simply makes it inactive for later cleanup."""
         self.folded = True
 
-    def is_blackjack(self):
+    def validate(self):
+        """Fold the hand if it is invalid.
+        Return True if valid, False if invalid."""
+        if self.smallest_value() > 21:
+            print "folded hand. value", self.smallest_value()
+            self.fold()
+            return False
+
+        return True
+
+    def get_blackjack(self):
         """Return True if the hand is made up of exactly one one Ace and a face card. Returns False otherwise.
         Two conditions to being a blackjack:
             1. There are exactly two cards.
             2. The maximum value of the cards adds up to 21."""
-        if len(self.cards == 2 and self.largest_value() == 21):
+        if len(self.cards) == 2 and self.largest_value() == 21:
             return True
         return False

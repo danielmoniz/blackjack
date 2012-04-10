@@ -71,6 +71,7 @@ class Game:
         them are blackjacks. (If the two are tied and one is a blackjack while
         the other isn't, it is a win or a loss.)"""
         #hand1_val, hand2_val = hand1.best_value(), hand2.best_value()
+
         if hand1.folded:
             return 'lose'
         elif hand2.folded:
@@ -85,11 +86,11 @@ class Game:
         elif hand1_val < hand2_val:
             return 'lose'
         else: # in the case of a tie
-            if hand1.is_blackjack() == hand2.is_blackjack():
+            if hand1.get_blackjack() == hand2.get_blackjack():
                 return 'push'
             else:
                 # At this point, hand1 having blackjack implies hand2 does not
-                if hand1.is_blackjack():
+                if hand1.get_blackjack():
                     return 'win'
                 else:
                     return 'lose'
@@ -109,6 +110,14 @@ class Game:
             pass
         else:
             return False
+
+        # @TODO This needs to act on a per-hand basis, not on the whole player!
+        hand = player.hands[0] # @TODO THIS IS TEMPORARY
+        hand.validate()
+        # if no hands remaining, end player's turn.
+        valid_hands = [hand for hand in player.hands if not hand.folded]
+        if len(valid_hands) == 0:
+            player.set_turn_over()
 
         return True
 
@@ -151,7 +160,6 @@ class Game:
 
         dealer_hand = Hand([self.deck.get_next_card()])
         self.dealer.assign_hand(dealer_hand)
-        print "is dealer's hand folded at start?", self.dealer.get_hand().folded
 
     # @TODO What is this function for if users are able to receive cards by
     # hitting?

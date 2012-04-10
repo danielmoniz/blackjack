@@ -85,7 +85,7 @@ while not game.over:
             print "dealer action:", action
             dealer.perform_action(action)
             game.accomodate_player_action(dealer, action)
-        game.validate_dealer_hand()
+        #game.validate_dealer_hand()
 
         # Turn is now over. Clean up the table and prepare for a new turn.
         game.end_turn()
