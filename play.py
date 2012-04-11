@@ -4,8 +4,10 @@ from player import Player
 from dealer import Dealer
 from deck import Deck
 from game import Game
+from user_interface import UserInterface
 
-# It is import that an imported player imported as 'Player'!
+# It is import that an imported player imported as 'Player' if you're using
+# only the one player.
 from ai_players import SplitDoublePlayer as Player
 
 """This file exists to start the game and help the Game class to direct the flow. 
@@ -14,6 +16,8 @@ It initializes the game object and runs the primary game loop. The primary game 
 2. Let the dealer have an action.
 3. If everybody is done, the dealer does actions until he/she is finished.
 4. End the turn and start a new one."""
+
+UI = UserInterface()
 
 # generate initial players, dealer, and deck
 deck = Deck()
@@ -35,23 +39,21 @@ game.start_turn()
 turn_count = 0
 while not game.over:
     # For each player at table, get actions, followed by dealer's action
-    print "-------------"
-    # Dealer only has one hand! Print out its information.
-    print "Dealer hand:"
-    print dealer.get_hand()
-    print dealer.get_hand().values()
+    UI.start_loop()
+    UI.dealer_hand(dealer.get_hand())
+
     for player in players:
-        print "---", player.chips, "CHIPS ---"
-        print "---------", player.name
+        UI.player_info(player)
+
         hands_copy = player.hands[:]
         for hand in hands_copy:
-            print hand
-            print hand.values()
-            print "--"
+            
+            UI.hand_info(hand)
             # Get the player's action and act on it.
             action = player.get_action()
             game.accomodate_player_action(player, action, hand)
-        print "---------"
+
+        UI.end_player_info_loop()
         # Split any hands that need splitting.
 
     game.split_player_hands()
@@ -74,7 +76,7 @@ while not game.over:
         # Enter dealer loop until dealer is finished
         while not dealer.turn_over:
             action = dealer.get_action()
-            print "dealer action:", action
+            UI.dealer_action(action)
             game.accomodate_player_action(dealer, action, dealer.get_hand())
 
         # Turn is now over. Clean up the table and prepare for a new turn.
@@ -86,6 +88,4 @@ while not game.over:
 
     turn_count += 1
 
-print "----------------"
-print "Game over! All players ran out of chips."
-print "The game lasted {} turns.".format(turn_count)
+UI.end_game(turn_count)
