@@ -21,7 +21,6 @@ class Deck:
             for card in self.cards:
                 card.flip()
             self.shuffle()
-            # @TODO RESHUFFLE all cards in discard pile? Need to make a discard pile!
         next_card = self.cards.pop()
         # Cards in a deck are flipped down, so they must be flipped.
         next_card.flip()

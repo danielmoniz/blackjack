@@ -150,7 +150,6 @@ class Game:
             pass
         elif action == 'split':
             # Split their hand in two if it matches a set of criteria.
-            # @TODO
             if hand.num_cards() == 2:
                 card1, card2 = hand.cards
                 if card1.get_value() == card2.get_value():
