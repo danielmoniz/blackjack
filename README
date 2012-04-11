@@ -1,6 +1,10 @@
 A basic BlackJack application that allows for pluggable AIs.
 
-The game is run by running game.py with Python. That is, run
+The game is run by running game.py with Python. That is, first make the file 'play.py' executable: 
+
+    chmod +x play.py
+    
+and then run:
 
     ./play.py
 
