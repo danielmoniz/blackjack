@@ -1,7 +1,20 @@
-A basic BlackJack application.
+A basic BlackJack application that allows for pluggable AIs.
 
 The game is run by running game.py with Python. That is, run
 
-    ./game.py
+    ./play.py
 
-in the command line.
+in the command line. It therefore requires Python to be installed. This program has been tested only on Ubuntu Linux, v11.10.
+
+For my intended audience, a report can be found in the file REPORT.
+
+The program works as follows:
+
+The play.py file starts a Game instance with a set of Players, a Deck, and a
+dealer. It then runs the primary Game loop, primarily interacting with the main
+Game instance, in order to receive user input and determine the path of the
+game. The user interface separately outputs the game's information in
+command-line format.
+
+If you have any questions about the game, do not hesitate to contact me at
+daniel [dot] moniz [at] gmail [dot] com.

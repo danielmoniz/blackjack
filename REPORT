@@ -1,12 +1,14 @@
 REPORT
 
-Missing features:
-- Players can only bet the minimum bet allowed.
+Features:
+- Can have multiple players.
+- Can plug in an AI to play by extending the Player class (as seen in
+  ai_players.py).
+- Allows for actions: hit, stand, split, double down, and surrender.
+- UI interface (user_interface.py) is modular enough to allow for (say) a
+  graphical user interface to be swapped in without much difficulty.
 
-Added features:
-- 
-
-Bugs:
-- The hit player will accumulate oodles of cards when used in combination with
-  a player that lasts longer.
-- 
+Future steps:
+- Make better use of the user interface module. Add any remaining output to
+  that module.
+- Refactor the Game class, particularly the section where actions are accepted.
