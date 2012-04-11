@@ -41,11 +41,9 @@ class Game:
         self.players = [p for p in self.players if p.has_enough_chips]
 
         # Kick players who cannot afford the minimum bet
-        print "TRY TO KICK PLAYERS"
         for player in self.players[:]:
             if not player.has_enough_chips(self.min_bet):
                 self.kick_player(player)
-        print "FINISHED KICKING PLAYERS"
 
         for player in self.players:
             player.place_bet(self.min_bet)
@@ -170,7 +168,11 @@ class Game:
             pass
         elif action == 'double':
             # Double a player's bet and give them one more card.
-            if not player.has_enough_chips(hand.get_bet_value()):
+            print hand
+            print hand.bet
+            # @TODO Check to see if hand.bet is None first. Fixes a bug that
+            # occurs when doubling down with not enough chips available.
+            if hand.bet == None or not player.has_enough_chips(hand.get_bet_value()):
                 UI.double_down_fail(player)
                 self.accomodate_player_action(player, 'hit', hand)
                 return False

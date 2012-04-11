@@ -74,7 +74,8 @@ class Player:
         Therefore, ALL player actions must go through this function."""
         # @TODO Utilize a separate UI module for this input
 
-        action = self.get_user_input(str(self) + ", type an action: ")
+        action = self.get_user_input(str(self) + ", type an action: ",
+            self.get_allowed_actions())
         self.first_turn = False
         return action
 
@@ -127,11 +128,11 @@ class Player:
 
         return True
 
-    def get_user_input(self, message):
+    def get_user_input(self, message, allowed_actions):
         """Gets command-line user input given a message.
         @TODO This should be in a separate UI module!!"""
         user_input = raw_input(message)
-        while user_input not in self.get_allowed_actions():
+        while user_input not in allowed_actions:
             print "Not an allowed action!"
             user_input = raw_input(message)
 

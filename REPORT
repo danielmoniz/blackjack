@@ -1,0 +1,12 @@
+REPORT
+
+Missing features:
+- Players can only bet the minimum bet allowed.
+
+Added features:
+- 
+
+Bugs:
+- The hit player will accumulate oodles of cards when used in combination with
+  a player that lasts longer.
+- 

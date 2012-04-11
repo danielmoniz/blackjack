@@ -1,4 +1,7 @@
 from card import Card
+from user_interface import UserInterface
+
+UI = UserInterface()
 
 class Hand:
     """Defines a single hand. Also stores bets placed on a given hand, and who placed those bets."""
@@ -82,7 +85,8 @@ class Hand:
         """Fold the hand if it is invalid.
         Return True if valid, False if invalid."""
         if self.smallest_value() > 21:
-            print "folded hand. value", self.smallest_value()
+            #print "folded hand. value", self.smallest_value()
+            #UI.player_hand_fold()
             self.fold()
             return False
 
