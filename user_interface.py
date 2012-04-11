@@ -108,3 +108,13 @@ class UserInterface:
 
     def too_many_players(self, max_players):
             print "Cannot have more than {} players!".format(max_players)
+
+    # ====================================================
+    # User input
+
+   
+    def get_user_input(self):
+        pass
+
+    def get_integer_user_input(self):
+        pass

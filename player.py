@@ -129,12 +129,30 @@ class Player:
         return True
 
     def get_user_input(self, message, allowed_actions):
-        """Gets command-line user input given a message.
-        @TODO This should be in a separate UI module!!"""
+        """Gets command-line user input given a message."""
         user_input = raw_input(message)
         while user_input not in allowed_actions:
             print "Not an allowed action!"
             user_input = raw_input(message)
+
+        return user_input
+
+    def get_user_integer_input(self, message, default, minimum, maximum):
+        """Gets command-line user INTEGER input given a message, a default
+        value, and a min and max value."""
+        user_input = raw_input(message)
+        try:
+            user_input = int(user_input)
+        except ValueError:
+            if user_input == "" or user_input == "\n":
+                user_input = default
+        while type(user_input) != int or user_input < minimum or user_input > maximum:
+            print "Not an allowed number!"
+            print "Enter a number between {} and {}.".format(minimum, maximum)
+            try:
+                user_input = int(raw_input(message))
+            except ValueError:
+                continue
 
         return user_input
 

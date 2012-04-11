@@ -11,6 +11,9 @@ class HitPlayer(Player):
         """Return hit every time."""
         return 'hit'
 
+    def get_user_integer_input(self, message, default, minimum, maximum):
+        return default
+
 class RandomPlayer(Player):
     """A simple AI that randomly chooses between hit and stand every time."""
 
@@ -23,6 +26,9 @@ class RandomPlayer(Player):
             return 'hit'
         else:
             return 'stand'
+
+    def get_user_integer_input(self, message, default, minimum, maximum):
+        return default
 
 class SplitDoublePlayer(Player):
     """A simple AI that splits whenever possible, doubles when it can't split
@@ -42,3 +48,6 @@ class SplitDoublePlayer(Player):
             return 'double'
         else:
             return 'stand'
+
+    def get_user_integer_input(self, message, default, minimum, maximum):
+        return default

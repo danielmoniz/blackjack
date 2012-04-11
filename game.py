@@ -37,16 +37,17 @@ class Game:
 
         self.deal_initial_hands()
         # Ask for bets from each player.
-        # @TODO Allow user to select a bet other than the minimum.
-        self.players = [p for p in self.players if p.has_enough_chips]
 
         # Kick players who cannot afford the minimum bet
         for player in self.players[:]:
             if not player.has_enough_chips(self.min_bet):
                 self.kick_player(player)
 
+        # @TODO Allow user to select a bet other than the minimum.
         for player in self.players:
-            player.place_bet(self.min_bet)
+            message = "Select a bet size (no input is {}):".format(self.min_bet)
+            bet_size = player.get_user_integer_input(message, self.min_bet, self.min_bet, self.max_bet)
+            player.place_bet(bet_size)
 
         # End the game if there are no more players.
         if len(self.players) == 0:
