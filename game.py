@@ -1,7 +1,7 @@
 from hand import Hand
 
 class Game:
-    def __init__(self, deck, discard, dealer = None, players = None):
+    def __init__(self, deck, dealer = None, players = None):
         """Set up game object. Define min/max bets, whether the game is over or
         not, the deck, players, and dealer, and the maximum number of
         players."""
@@ -9,7 +9,6 @@ class Game:
         self.max_bet = 100
         self.over = False
         self.deck = deck
-        self.discard = discard
         self.max_players = 2
         self.dealer = dealer
 
@@ -35,6 +34,12 @@ class Game:
         # Ask for bets from each player.
         # @TODO Allow user to select a bet other than the minimum.
         self.players = [p for p in self.players if p.has_enough_chips]
+
+        # Kick players who cannot afford the minimum bet
+        for player in self.players[:]:
+            if not player.has_enough_chips(self.min_bet):
+                self.players.remove(player)
+
         for player in self.players:
             player.place_bet(self.min_bet)
 
@@ -104,6 +109,8 @@ class Game:
         for player in self.players:
             for hand in player.hands:
                 outcome = self.evaluate_hands(hand, dealer_hand)
+                print hand
+                print hand.bet
                 value, owner = hand.bet[0], hand.bet[1]
                 print player, "score:", hand.best_value()
                 # Move chips depending on the outcome.
@@ -228,7 +235,6 @@ class Game:
             print new_hand
             print "----------------"
             player.assign_hand(new_hand)
-            #player.place_bet(self.min_bet, new_hand)
 
         dealer_hand = Hand([self.deck.get_next_card()])
         self.dealer.assign_hand(dealer_hand)
@@ -286,7 +292,7 @@ class Game:
         for hand in hands:
             card_list = hand.cards
             for card in card_list:
-                self.discard.add_card(card)
+                self.deck.discard(card)
 
 """
 Deprecated: The dealer's hand is now validated every time he/she hits.

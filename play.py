@@ -5,6 +5,9 @@ from dealer import Dealer
 from deck import Deck
 from game import Game
 
+# It is import that an imported player imported as 'Player'!
+from ai_players import SplitDoublePlayer as Player
+
 """This file exists to start the game and help the Game class to direct the flow. 
 It initializes the game object and runs the primary game loop. The primary game loop, in short, does the following:
 1. receive input actions from each player.
@@ -16,7 +19,6 @@ It initializes the game object and runs the primary game loop. The primary game 
 deck = Deck()
 deck.shuffle()
 # The discard pile is a deck of size 0
-discard = Deck(0)
 
 # For now, create a single player. Should allow for more.
 # @TODO Ask for number of players and their names.
@@ -24,12 +26,13 @@ players = [Player("Human 1")]
 dealer = Dealer("Dealer")
 
 # Initialize game object
-game = Game(deck, discard, dealer, players)
+game = Game(deck, dealer, players)
 # Deal hands and have players place bets.
 game.start_turn()
 
 # GAME LOOP - retrieve player input until they have lost the round or are
 # standing (I think)
+turn_count = 0
 while not game.over:
     # For each player at table, get actions, followed by dealer's action
     print "-------------"
@@ -80,3 +83,9 @@ while not game.over:
     else:
         # disallow first-turn actions. Move to start of game loop
         continue
+
+    turn_count += 1
+
+print "----------------"
+print "Game over! All players ran out of chips."
+print "The game lasted {} turns.".format(turn_count)
