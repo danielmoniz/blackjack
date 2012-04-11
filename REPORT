@@ -12,6 +12,11 @@ Future steps:
 - Make better use of the user interface module. Add any remaining output to
   that module.
 - Refactor the Game class, particularly the section where actions are accepted.
+- Add to the Player class such that each player keeps track of their wins,
+  losses, and the cards that have come up. This would allow me to create
+player AIs that act as card counting strategies. I could then test different
+strategies and pick the best one to use on my own. ;)
+	- I may end up doing this on my own time in the next few weeks.
 
 Bugs:
 - Splitting or Doubling Down on a turn other than the first does not work, as
