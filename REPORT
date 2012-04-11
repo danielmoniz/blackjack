@@ -12,3 +12,9 @@ Future steps:
 - Make better use of the user interface module. Add any remaining output to
   that module.
 - Refactor the Game class, particularly the section where actions are accepted.
+
+Bugs:
+- Splitting or Doubling Down on a turn other than the first does not work, as
+  is meant to be. However, it simply passes on the turn. This means that a
+  player can delay their turn until they find out what the dealer does, and
+  then act accordingly (gaining a huge advantage).
