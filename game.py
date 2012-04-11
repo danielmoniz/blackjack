@@ -1,4 +1,7 @@
+from user_interface import UserInterface
 from hand import Hand
+
+UI = UserInterface()
 
 class Game:
     def __init__(self, deck, dealer = None, players = None):
@@ -25,6 +28,8 @@ class Game:
         """Deal new hands, and take initial user bets (minimum). Perform any
         other start-of-turn actions.  Boot players if they do not have enough
         chips for a minimum bet. End the game if there are no more players."""
+        UI.start_turn()
+
         # Set players and dealer to a new turn.
         for player in self.players:
             player.set_new_turn()
@@ -36,9 +41,11 @@ class Game:
         self.players = [p for p in self.players if p.has_enough_chips]
 
         # Kick players who cannot afford the minimum bet
+        print "TRY TO KICK PLAYERS"
         for player in self.players[:]:
             if not player.has_enough_chips(self.min_bet):
-                self.players.remove(player)
+                self.kick_player(player)
+        print "FINISHED KICKING PLAYERS"
 
         for player in self.players:
             player.place_bet(self.min_bet)
@@ -79,8 +86,7 @@ class Game:
             return 'lose'
         # If the dealer folded but not the player, then the player wins.
         elif dealer_hand.folded:
-            print dealer_hand, dealer_hand.folded
-            print "dealer folded!"
+            UI.player_hand_fold(self.dealer, dealer_hand, dealer_hand.best_value())
             return 'win'
         player_val, dealer_val = player_hand.best_value(), dealer_hand.best_value()
 
@@ -105,25 +111,26 @@ class Game:
         @TODO Printed data should be in a separate UI class!"""
         dealer_hand = self.dealer.get_hand()
         dealer_score = dealer_hand.best_value()
-        print "Dealer score:", dealer_score
+        UI.player_score(self.dealer, dealer_score)
         for player in self.players:
             for hand in player.hands:
                 outcome = self.evaluate_hands(hand, dealer_hand)
-                print hand
-                print hand.bet
+                UI.player_hand_bet(player, hand)
                 value, owner = hand.bet[0], hand.bet[1]
-                print player, "score:", hand.best_value()
+
+                UI.player_score(player, hand.best_value())
+
                 # Move chips depending on the outcome.
                 if outcome == 'win':
                     owner.add_chips(2 * value)
                     self.dealer.remove_chips(value)
-                    print str(owner), "won", value, "chips!"
+                    UI.win_hand(owner, value)
                 elif outcome == 'push':
                     # Replace chips
                     owner.add_chips(value)
-                    print str(owner), "broke even with", value, "chips."
+                    UI.push_hand(owner, value)
                 elif outcome == 'lose':
-                    print str(owner), "lost", value, "chips."
+                    UI.lose_hand(owner, value)
                     self.dealer.add_chips(value)
 
     # @TODO This function DEFINITELY needs breaking up/refactoring.
@@ -144,7 +151,7 @@ class Game:
             # Deal a single card to the player.
             new_card = self.deck.get_next_card()
             player.assign_new_card(new_card, hand)
-            print "Dealt:", new_card
+            UI.deal_card(player, new_card)
         elif action == 'stand':
             # Do nothing; the player has ended their turn.
             pass
@@ -164,7 +171,7 @@ class Game:
         elif action == 'double':
             # Double a player's bet and give them one more card.
             if not player.has_enough_chips(hand.get_bet_value()):
-                print "Not enough chips for a double down! Hitting instead."
+                UI.double_down_fail(player)
                 self.accomodate_player_action(player, 'hit', hand)
                 return False
 
@@ -200,7 +207,7 @@ class Game:
         """Add a new player to the table. Returns True if a player is added,
         and False otherwise."""
         if len(self.players) + 1 > self.max_players:
-            print "Cannot have more than {} players!".format(self.max_players)
+            UI.too_many_players(self.max_players)
             return False
         else:
             self.players.append(player)
@@ -211,9 +218,8 @@ class Game:
         """Remove a player from the game for losing.
         Returns True if they were successfully kicked, and false otherwise."""
         try:
-            print player, "loses!"
-            # @TODO Move this message to the UI module.
-            game.players.remove(player)
+            UI.lose(player)
+            self.players.remove(player)
             return True
         except KeyError:
             return False
@@ -230,10 +236,8 @@ class Game:
             for i in range(num_cards):
                 new_card = self.deck.get_next_card()
                 new_hand.add_card(new_card)
-            print "Newly dealt cards:"
-            print new_hand
-            print "----------------"
             player.assign_hand(new_hand)
+            UI.deal_hand(player, new_hand)
 
         dealer_hand = Hand([self.deck.get_next_card()])
         self.dealer.assign_hand(dealer_hand)
@@ -244,7 +248,7 @@ class Game:
         for player in self.players:
             for hand in player.hands:
                 if hand.smallest_value() > 21:
-                    print "folded hand. value", hand.smallest_value()
+                    UI.player_hand_fold(player, hand, hand.smallest_value())
                     player.fold_hand(hand)
             # if no hands remaining, end player's turn.
             valid_hands = [hand for hand in player.hands if not hand.folded]

@@ -8,7 +8,7 @@ from user_interface import UserInterface
 
 # It is import that an imported player imported as 'Player' if you're using
 # only the one player.
-from ai_players import SplitDoublePlayer as Player
+from ai_players import SplitDoublePlayer, HitPlayer, RandomPlayer
 
 """This file exists to start the game and help the Game class to direct the flow. 
 It initializes the game object and runs the primary game loop. The primary game loop, in short, does the following:
@@ -19,6 +19,8 @@ It initializes the game object and runs the primary game loop. The primary game 
 
 UI = UserInterface()
 
+UI.game_instructions()
+
 # generate initial players, dealer, and deck
 deck = Deck()
 deck.shuffle()
@@ -26,7 +28,8 @@ deck.shuffle()
 
 # For now, create a single player. Should allow for more.
 # @TODO Ask for number of players and their names.
-players = [Player("Human 1")]
+players = [SplitDoublePlayer("Human 1"), RandomPlayer("Human 3")]
+#players = [Player('Team Twitter')]
 dealer = Dealer("Dealer")
 
 # Initialize game object
@@ -39,8 +42,7 @@ game.start_turn()
 turn_count = 0
 while not game.over:
     # For each player at table, get actions, followed by dealer's action
-    UI.start_loop()
-    UI.dealer_hand(dealer.get_hand())
+    UI.player_hand(dealer, dealer.get_hand())
 
     for player in players:
         UI.player_info(player)
@@ -48,7 +50,7 @@ while not game.over:
         hands_copy = player.hands[:]
         for hand in hands_copy:
             
-            UI.hand_info(hand)
+            UI.hand_without_name(hand)
             # Get the player's action and act on it.
             action = player.get_action()
             game.accomodate_player_action(player, action, hand)
@@ -76,7 +78,6 @@ while not game.over:
         # Enter dealer loop until dealer is finished
         while not dealer.turn_over:
             action = dealer.get_action()
-            UI.dealer_action(action)
             game.accomodate_player_action(dealer, action, dealer.get_hand())
 
         # Turn is now over. Clean up the table and prepare for a new turn.
