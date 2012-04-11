@@ -28,9 +28,10 @@ deck.shuffle()
 
 # For now, create a single player. Should allow for more.
 # @TODO Ask for number of players and their names.
-players = [SplitDoublePlayer("Human 1"), HitPlayer("Human 2"), RandomPlayer("Human 3")]
-#players = [Player('Team Twitter')]
-#players = [HitPlayer("Human 2")]
+
+# UNCOMMENT THE FOLLOWING LINE LINE TO EXPERIMENT WITH PRE-BUILT AI SCRIPTS
+#players = [SplitDoublePlayer("Human 1"), HitPlayer("Human 2"), RandomPlayer("Human 3")]
+players = [Player('Team Twitter')]
 dealer = Dealer("Dealer")
 
 # Initialize game object
