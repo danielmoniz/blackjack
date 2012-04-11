@@ -15,6 +15,8 @@ It initializes the game object and runs the primary game loop. The primary game 
 # generate initial players, dealer, and deck
 deck = Deck()
 deck.shuffle()
+# The discard pile is a deck of size 0
+discard = Deck(0)
 
 # For now, create a single player. Should allow for more.
 # @TODO Ask for number of players and their names.
@@ -22,7 +24,7 @@ players = [Player("Human 1")]
 dealer = Dealer("Dealer")
 
 # Initialize game object
-game = Game(deck, dealer, players)
+game = Game(deck, discard, dealer, players)
 # Deal hands and have players place bets.
 game.start_turn()
 

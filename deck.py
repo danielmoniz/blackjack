@@ -19,6 +19,10 @@ class Deck:
         next_card.flip()
         return next_card
 
+    def add_card(self, card):
+        """Places a card on TOP of the deck. Mainly used for discard piles. It is not flipped automatically."""
+        self.cards.append(card)
+
     def generate_deck(self, num_decks):
         """A helper function to generate a deck."""
         cards = []

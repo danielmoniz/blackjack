@@ -1,7 +1,7 @@
 from hand import Hand
 
 class Game:
-    def __init__(self, deck = None, dealer = None, players = []):
+    def __init__(self, deck, discard, dealer = None, players = None):
         """Set up game object. Define min/max bets, whether the game is over or
         not, the deck, players, and dealer, and the maximum number of
         players."""
@@ -9,9 +9,14 @@ class Game:
         self.max_bet = 100
         self.over = False
         self.deck = deck
+        self.discard = discard
         self.max_players = 2
         self.dealer = dealer
-        self.players = players
+
+        if players == None:
+            self.players = []
+        else:
+            self.players = players
 
     def end_game(self):
         """Simply set the game state to be over."""
@@ -43,10 +48,18 @@ class Game:
         # Evaluate hands, compare to dealer's, and move chips accordingly.
         self.move_chips()
 
-        # Clear player hands and dealer's hand
+        # Clear player hands and dealer's hand. Iterate through each player's
+        # hands and the dealer's hand to discard them individually
+        hands_to_discard = []
         for player in self.players:
-            player.purge_hands()
+            hands = player.purge_hands()
+            for hand in hands:
+                hands_to_discard.append(hand)
+        dealer_hand = self.dealer.get_hand()
         self.dealer.purge_hands()
+        hands_to_discard.append(dealer_hand)
+
+        self.discard_hands(hands_to_discard)
 
     def evaluate_hands(self, player_hand, dealer_hand):
         """Evaluates two valid (ie <= 21) hands from the point of view of the
@@ -267,6 +280,13 @@ class Game:
                 player.assign_hand(new_hand2)
                 owner.place_bet(bet_value, new_hand1)
                 owner.place_bet(bet_value, new_hand2)
+
+    def discard_hands(self, hands):
+        """Communicates with the game's discard pile to discard hands."""
+        for hand in hands:
+            card_list = hand.cards
+            for card in card_list:
+                self.discard.add_card(card)
 
 """
 Deprecated: The dealer's hand is now validated every time he/she hits.

@@ -58,12 +58,15 @@ class Player:
         self.hands.append(hand)
 
     def purge_hands(self):
-        """Remove all hands for this player."""
+        """Remove all hands for this player. Return their hands for disposal."""
+        hands = self.hands[:]
         del self.hands[:]
+        return hands
 
     def purge_hand(self, hand):
-        """Remove the specific hand."""
+        """Remove the specific hand. Return the hand for disposal."""
         self.hands.remove(hand)
+        return hand
 
     def get_action(self):
         """Get input from the player to determine their next action.
