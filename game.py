@@ -148,7 +148,7 @@ class Game:
         # Depending on the action provided, perform different effects.
         if action == 'hit':
             # Deal a single card to the player.
-            new_card = self.deck.get_next_card()
+            new_card = self.draw_card()
             player.assign_new_card(new_card, hand)
             UI.deal_card(player, new_card)
         elif action == 'stand':
@@ -185,7 +185,7 @@ class Game:
             owner.place_bet(2 * bet_value, hand)
 
             # Add a single card to the hand.
-            player.assign_new_card(self.deck.get_next_card(), hand)
+            player.assign_new_card(self.draw_card(), hand)
         elif action == "surrender":
             # Restore 50% (rounded down) of a bet's chips to its owner.
             bet_value, owner = hand.bet
@@ -237,12 +237,12 @@ class Game:
         for player in self.players:
             new_hand = Hand()
             for i in range(num_cards):
-                new_card = self.deck.get_next_card()
+                new_card = self.draw_card()
                 new_hand.add_card(new_card)
             player.assign_hand(new_hand)
             UI.deal_hand(player, new_hand)
 
-        dealer_hand = Hand([self.deck.get_next_card()])
+        dealer_hand = Hand([self.draw_card()])
         self.dealer.assign_hand(dealer_hand)
 
     def validate_player_hands(self):
@@ -282,10 +282,10 @@ class Game:
 
                 # Delete the old hand and make two new ones
                 player.purge_hand(hand)
-                new_card1 = self.deck.get_next_card()
+                new_card1 = self.draw_card()
                 new_hand1 = Hand([card1, new_card1])
                 
-                new_card2 = self.deck.get_next_card()
+                new_card2 = self.draw_card()
                 new_hand2 = Hand([card2, new_card2])
 
                 player.assign_hand(new_hand1)
@@ -300,13 +300,20 @@ class Game:
             for card in card_list:
                 self.deck.discard(card)
 
-"""
-Deprecated: The dealer's hand is now validated every time he/she hits.
+    def draw_card(self):
+        """Simply communicates with the game deck and shows all players the card."""
+        card = self.deck.get_next_card()
+        # Show card to all players
+        for player in self.players:
+            player.show_card(card)
+        return card
+
+# Deprecated ----------------------------
+
+# The dealer's hand is now validated every time he/she hits.
     def validate_dealer_hand(self):
-        #Ensure the dealer's hand is not over 21, and that his hand is folded
-        if he goes over.
+        """Ensure the dealer's hand is not over 21, and that his hand is folded if he goes over."""
         hand = self.dealer.get_hand()
         if hand.smallest_value > 21:
             self.dealer.fold_hand(hand)
             self.dealer.set_turn_over()
-"""

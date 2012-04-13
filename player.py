@@ -27,6 +27,10 @@ class Player:
             return "Human player"
         return self.name
 
+    def show_card(self, card):
+        """A function designed to be overridden by clever AI player script. Each card shown to the player (ie. dealt cards to any player) can be recorded. This data can be used for making good decisions."""
+        pass
+
     def get_allowed_actions(self):
         """Return the actions currently available to the player. If it is the
         first turn of a round, there are more actions available."""
