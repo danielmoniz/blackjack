@@ -1,0 +1,3 @@
+- if you mis-type a bet, hitting enter for the default no longer works.
+    - ie. the while loop conditional is not identical to the initial
+      conditional.
