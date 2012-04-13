@@ -21,7 +21,10 @@ class SimpleBeatTheDealerPlayer(Player):
     def get_user_integer_input(self, message, default, minimum, maximum):
         """Return a bet depending on the game's count, ie. how sure the player is that the draw will be favourable."""
         # @TODO Return a dynamic bet. Not immediately important.
-        return default
+        bet = default
+        if self.count > 0:
+            bet = self.count * default
+        return min(bet, maximum)
 
     def show_card(self, card):
         """Override the Player function which shows a card to each player. Depending on which cards are shown, modify the game's "count"."""
