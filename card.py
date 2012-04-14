@@ -43,9 +43,7 @@ class Card:
         Eg. "the *Ace* of Spades", vs. "the 9 of Spades". <== name, value."""
         if self.name == None:
             self.name = self.get_name_from_value(self.value)
-            return str(self.name)
-        else:
-            return str(self.name)
+        return str(self.name)
 
     def get_name_from_value(self, value):
         """Take in an integer value for a card and output its name.

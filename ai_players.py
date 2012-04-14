@@ -7,11 +7,11 @@ class HitPlayer(Player):
     def __str__(self):
         return "Hit Player"
     
-    def get_user_input(self, message, allowed_actions):
+    def get_user_input(self, game, hand, message, allowed_actions):
         """Return hit every time."""
         return 'hit'
 
-    def get_user_integer_input(self, message, default, minimum, maximum):
+    def get_user_integer_input(self, game, hand, message, default, minimum, maximum):
         return default
 
 class RandomPlayer(Player):
@@ -20,14 +20,14 @@ class RandomPlayer(Player):
     def __str__(self):
         return "Random Player"
     
-    def get_user_input(self, message, allowed_actions):
+    def get_user_input(self, game, hand, message, allowed_actions):
         """Return 'hit' every time."""
         if random.random() < 0.5:
             return 'hit'
         else:
             return 'stand'
 
-    def get_user_integer_input(self, message, default, minimum, maximum):
+    def get_user_integer_input(self, game, hand, message, default, minimum, maximum):
         return default
 
 class SplitDoublePlayer(Player):
@@ -37,7 +37,7 @@ class SplitDoublePlayer(Player):
     def __str__(self):
         return "Split/Double Player"
     
-    def get_user_input(self, message, allowed_actions):
+    def get_user_input(self, game, hand, message, allowed_actions):
         """Return 'double' every time."""
         if self.first_turn:
             hand = self.hands[0]
@@ -49,5 +49,7 @@ class SplitDoublePlayer(Player):
         else:
             return 'stand'
 
-    def get_user_integer_input(self, message, default, minimum, maximum):
+    def get_user_integer_input(self, game, hand, message, default, minimum, maximum):
         return default
+
+

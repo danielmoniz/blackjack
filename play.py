@@ -9,6 +9,7 @@ from user_interface import UserInterface
 # It is import that an imported player imported as 'Player' if you're using
 # only the one player.
 from ai_players import SplitDoublePlayer, HitPlayer, RandomPlayer
+from card_counting_ai import SimpleBeatTheDealerPlayer as CardCounterPlayer
 
 """This file exists to start the game and help the Game class to direct the flow. 
 It initializes the game object and runs the primary game loop. The primary game loop, in short, does the following:
@@ -31,7 +32,8 @@ deck.shuffle()
 
 # UNCOMMENT THE FOLLOWING LINE LINE TO EXPERIMENT WITH PRE-BUILT AI SCRIPTS
 #players = [SplitDoublePlayer("Human 1"), HitPlayer("Human 2"), RandomPlayer("Human 3")]
-players = [Player('Team Twitter')]
+#players = [Player('Team Twitter')]
+players = [CardCounterPlayer("BeatTheDealer01")]
 dealer = Dealer("Dealer")
 
 # Initialize game object
@@ -42,7 +44,7 @@ game.start_turn()
 # GAME LOOP - retrieve player input until they have lost the round or are
 # standing (I think)
 turn_count = 0
-while not game.over:
+while not game.over and turn_count < game.turn_limit:
     # For each player at table, get actions, followed by dealer's action
     UI.player_hand(dealer, dealer.get_hand())
 
@@ -54,7 +56,7 @@ while not game.over:
             
             UI.hand_without_name(hand)
             # Get the player's action and act on it.
-            action = player.get_action()
+            action = player.get_action(game, hand)
             game.accomodate_player_action(player, action, hand)
 
         UI.end_player_info_loop()
@@ -66,7 +68,7 @@ while not game.over:
     #game.validate_player_hands()
 
     # Get dealer action now that players have acted.
-    dealer_action = dealer.get_action()
+    dealer_action = dealer.get_action(game)
     game.accomodate_player_action(dealer, dealer_action, dealer.get_hand())
 
     # Check game state. Is everybody standing, surrendered, or over?
@@ -79,7 +81,7 @@ while not game.over:
     if players_finished:
         # Enter dealer loop until dealer is finished
         while not dealer.turn_over:
-            action = dealer.get_action()
+            action = dealer.get_action(game)
             game.accomodate_player_action(dealer, action, dealer.get_hand())
 
         # Turn is now over. Clean up the table and prepare for a new turn.

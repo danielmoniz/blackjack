@@ -72,13 +72,15 @@ class Player:
         self.hands.remove(hand)
         return hand
 
-    def get_action(self):
+    def get_action(self, game, hand):
         """Get input from the player to determine their next action.
+        Takes as input the entire game object because the player needs more
+        information to make decisions.
         Also set the player's first_turn property to False!
         Therefore, ALL player actions must go through this function."""
         # @TODO Utilize a separate UI module for this input
 
-        action = self.get_user_input(str(self) + ", type an action: ",
+        action = self.get_user_input(game, hand, str(self) + ", type an action: ",
             self.get_allowed_actions())
         self.first_turn = False
         return action
@@ -132,7 +134,7 @@ class Player:
 
         return True
 
-    def get_user_input(self, message, allowed_actions):
+    def get_user_input(self, game, hand, message, allowed_actions):
         """Gets command-line user input given a message."""
         user_input = raw_input(message)
         while user_input not in allowed_actions:
@@ -141,7 +143,7 @@ class Player:
 
         return user_input
 
-    def get_user_integer_input(self, message, default, minimum, maximum):
+    def get_user_integer_input(self, game, hand, message, default, minimum, maximum):
         """Gets command-line user INTEGER input given a message, a default
         value, and a min and max value."""
         user_input = raw_input(message)

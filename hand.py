@@ -101,6 +101,14 @@ class Hand:
             return True
         return False
 
+    def is_hard(self):
+        """Returns True if a hand has no aces, and False otherwise."""
+        for card in self.cards:
+            # If the card is an Ace, the hand must be soft.
+            if card.get_value() == 1:
+                return False
+        return True
+
     def num_cards(self):
         """Return the number of cards in the hand."""
         return len(self.cards)

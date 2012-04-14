@@ -10,6 +10,7 @@ class Game:
         players."""
         self.min_bet = 10
         self.max_bet = 100
+        self.turn_limit = 1000
         self.over = False
         self.deck = deck
         self.max_players = 2
@@ -46,7 +47,7 @@ class Game:
         # @TODO Allow user to select a bet other than the minimum.
         for player in self.players:
             message = "Select a bet size (no input is {}):".format(self.min_bet)
-            bet_size = player.get_user_integer_input(message, self.min_bet, self.min_bet, self.max_bet)
+            bet_size = player.get_user_integer_input(self, player.hands[0], message, self.min_bet, self.min_bet, self.max_bet)
             player.place_bet(bet_size)
 
         # End the game if there are no more players.

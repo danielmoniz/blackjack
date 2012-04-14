@@ -24,7 +24,7 @@ class Dealer(Player):
         split, double, or surrender at any time."""
         return ['hit', 'stand']
 
-    def get_action(self):
+    def get_action(self, game):
         """Given the dealer's current hand situation, return the required
         action. The dealer stands if any of his hand values are 17 or over."""
         for value in self.get_hand().values():
