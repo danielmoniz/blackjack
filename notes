@@ -1,0 +1,11 @@
+Possible solutions to the problem of the player not knowing what's in the dealer's hand:
+- at the time the user is asked for action, send them the dealer's hand.
+- store the dealer's hand information separately in each player object.
+- rewrite the application such that the dealer's hand is accessible to the
+  players.
+    - this solution would work if each player was passed a "table" object that
+      contained the hands of all players and the dealer. In this case, they would have to be passed the Game object. This may be overkill, since each player in Blackjack needs only know what cards have been used, what is in their hand, what is in the dealer's hand, how many cards are in the deck initially,
+            - there is actually a lot of information the player needs to know.
+              Perhaps it is best to actually pass the user the entire game object?
+            - it would also allow for other games to more easily be plugged in,
+              since in other games a person may need to know the hands of everybody else as well.
