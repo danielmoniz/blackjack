@@ -14,8 +14,8 @@ Future steps:
 - Refactor the Game class, particularly the section where actions are accepted.
 - Add to the Player class such that each player keeps track of their wins,
   losses, and the cards that have come up. This would allow me to create
-player AIs that act as card counting strategies. I could then test different
-strategies and pick the best one to use on my own. ;)
+  player AIs that act as card counting strategies. I could then test different
+  strategies and pick the best one to use on my own. ;)
 	- I may end up doing this on my own time in the next few weeks.
 
 Bugs:
@@ -23,3 +23,38 @@ Bugs:
   is meant to be. However, it simply passes on the turn. This means that a
   player can delay their turn until they find out what the dealer does, and
   then act accordingly (gaining a huge advantage).
+
+Things I have learned:
+It seems incredibly important to really decide on the "point of view" (POV)
+of an application. For example, this implementation of Blackjack revolves
+a 'Game' object, which is essentially the table and all of its events. It
+includes a Dealer, a set of Players, and a Deck of Cards. It stores information
+about the maximum length of the game, the bet sizes, and whether or not the
+game is over. It also provides functions for initializing the start of the turn
+and cleaning up the end of a turn.
+
+Most importantly, the Game class contains the actual game logic for the game of
+Blackjack, and it provides functions for dealing cards to players. Note here
+that the dealer does not actually deal the cards to the players! This is
+because, as a design decision, the dealer is being treated as a type of player
+with specific rules rather than an overseer.
+
+-------------
+
+Were I to redesign the game, I would likely set up the players such that they
+are being passed information about each event that occurs. This might be
+accomplished by using the 'Borg' design pattern for each of the players, where
+they all share a 'state' that is actually a pointer to the dealer's hand. Or,
+the hands are stored separately from players and the players can access
+functions to view each hand.
+
+The game logic would be made in a more modular fashion, rather than being
+embedded in every nook and cranny of the code. This would allow for other games
+to be plugged in, but more importantly it would allow me to more easily modify
+the rules of the variant of Blackjack.
+
+Lastly, I would design it keeping in mind that I want AI scripts to plug right
+into it. The current setup is somewhat awkward, with players extending the
+Player class (that part is okay) and overriding functions such as
+"get_user_integer_input()". The latter should really be a helper function, not
+a function for placing bets!
